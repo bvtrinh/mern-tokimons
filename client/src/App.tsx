@@ -7,7 +7,7 @@ function App() {
   return (
     <div className={classes.App}>
       <NavBar />
-      <MDBJumbotron className={classes.jumbotron}>
+      <MDBJumbotron className={classes.Jumbotron}>
         <MDBContainer>
           <img
             src="/images/full-tokimon.png"
