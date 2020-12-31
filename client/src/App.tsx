@@ -1,16 +1,23 @@
 import React from "react";
-import Container from "react-bootstrap/Container";
-import Jumbotron from "react-bootstrap/Jumbotron";
+import { MDBContainer, MDBJumbotron } from "mdbreact";
+import NavBar from "./components/NavBar";
+import classes from "./App.module.css";
 
 function App() {
   return (
-    <div className="App">
-      <Container>
-        <Jumbotron>
-          <h1>React with Bootstrap and TypeScript</h1>
-          <p>I'm not saying Hello World here</p>
-        </Jumbotron>
-      </Container>
+    <div className={classes.App}>
+      <NavBar />
+      <MDBJumbotron className={classes.jumbotron}>
+        <MDBContainer>
+          <img
+            src="/images/full-tokimon.png"
+            alt="Home Logo"
+            className="img-fluid mx-auto d-block"
+          />
+          <hr />
+          <h3>Welcome to the world of Tokimons!</h3>
+        </MDBContainer>
+      </MDBJumbotron>
     </div>
   );
 }
