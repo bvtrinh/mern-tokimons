@@ -6,10 +6,15 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
 
-ReactDOM.render(
-  <React.StrictMode>
+import { BrowserRouter as Router } from "react-router-dom";
+const app = (
+  <Router>
     <App />
-  </React.StrictMode>,
+  </Router>
+);
+
+ReactDOM.render(
+  <React.StrictMode>{app}</React.StrictMode>,
   document.getElementById("root")
 );
 
