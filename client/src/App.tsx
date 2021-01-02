@@ -7,6 +7,7 @@ import { Route, Switch } from "react-router-dom";
 class App extends Component {
   state = {
     isCreateModalOpen: false,
+    loggedIn: true,
   };
 
   toggleCreateModalHandler = () => {
@@ -15,13 +16,28 @@ class App extends Component {
     });
   };
 
+  loginHandler = () => {
+    this.setState({ loggedIn: true });
+  };
+
+  logoutHandler = () => {
+    this.setState({ loggedIn: false });
+  };
+
   render() {
     return (
       <div className={classes.App}>
-        <CustomNavBar />
+        <CustomNavBar
+          loggedIn={this.state.loggedIn}
+          login={this.loginHandler}
+          logout={this.logoutHandler}
+        />
         {/* <TokiModal /> */}
         <Switch>
-          <Route path="/" component={Home} />
+          <Route
+            path="/"
+            component={() => <Home loggedIn={this.state.loggedIn} />}
+          />
         </Switch>
       </div>
     );
