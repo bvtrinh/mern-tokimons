@@ -1,6 +1,6 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
-import TokiSchema from "../../models/Tokimon";
+import TokiSchema from "../../models/TokimonSchema";
 import CustomInput from "./CustomInput";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
