@@ -1,6 +1,6 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
-import TokiSchema from "../models/Tokimon";
+import TokiSchema from "../../models/Tokimon";
 import CustomInput from "./CustomInput";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
@@ -172,7 +172,11 @@ const TokiForm: React.FC<Props> = (props) => {
           </Row>
 
           <div className={classes.btnPlacement}>
-            <Button className="mx-2" variant="secondary">
+            <Button
+              onClick={props.toggleModal}
+              className="mx-2"
+              variant="secondary"
+            >
               Cancel
             </Button>
             <Button type="submit" variant="primary">

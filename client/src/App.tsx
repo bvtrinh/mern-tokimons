@@ -3,7 +3,7 @@ import CustomNavBar from "./components/CustomNavBar";
 import Home from "./containers/Home";
 import classes from "./App.module.css";
 import { Route, Switch } from "react-router-dom";
-import TokiForm from "./components/TokiForm";
+import TokiForm from "./components/Forms/TokiForm";
 import TokiModal from "./components/TokiModal";
 
 class App extends Component {
