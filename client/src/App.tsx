@@ -3,6 +3,8 @@ import CustomNavBar from "./components/CustomNavBar";
 import Home from "./containers/Home";
 import classes from "./App.module.css";
 import { Route, Switch } from "react-router-dom";
+import TokiForm from "./components/TokiForm";
+import TokiModal from "./components/TokiModal";
 
 class App extends Component {
   state = {
@@ -31,8 +33,15 @@ class App extends Component {
           loggedIn={this.state.loggedIn}
           login={this.loginHandler}
           logout={this.logoutHandler}
+          openCreateModal={this.toggleCreateModalHandler}
         />
-        {/* <TokiModal /> */}
+        <TokiModal
+          show={this.state.isCreateModalOpen}
+          onHide={this.toggleCreateModalHandler}
+          title="Create a Tokimon!"
+        >
+          <TokiForm toggleModal={this.toggleCreateModalHandler} />
+        </TokiModal>
         <Switch>
           <Route
             path="/"

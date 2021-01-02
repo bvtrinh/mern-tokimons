@@ -11,11 +11,12 @@ interface Props {
   login: () => void;
   logout: () => void;
   loggedIn: boolean;
+  openCreateModal: () => void;
 }
 
 const CustomNavBar: React.FC<Props> = (props) => {
   const create = props.loggedIn ? (
-    <Nav.Link>
+    <Nav.Link onClick={props.openCreateModal}>
       <VscDiffAdded /> Create
     </Nav.Link>
   ) : null;
