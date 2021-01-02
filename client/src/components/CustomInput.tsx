@@ -18,7 +18,9 @@ const CustomInput: React.FC<Props> = (props) => {
         type={props.type}
         placeholder={props.placeholder}
       />
-      <Form.Text className="text-muted">{props.underText}</Form.Text>
+      {props.underText ? (
+        <Form.Text className="text-muted">{props.underText}</Form.Text>
+      ) : null}
     </Form.Group>
   );
 };
