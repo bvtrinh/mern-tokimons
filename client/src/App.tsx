@@ -4,6 +4,7 @@ import Home from "./containers/Home";
 import classes from "./App.module.css";
 import { Route, Switch } from "react-router-dom";
 import TokiModal from "./components/TokiModal";
+import TokiInfo from "./components/TokiInfo";
 
 class App extends Component {
   state = {
@@ -42,8 +43,10 @@ class App extends Component {
         <Switch>
           <Route
             path="/"
+            exact
             component={() => <Home loggedIn={this.state.loggedIn} />}
           />
+          <Route path="/t/:id" component={TokiInfo} />
         </Switch>
       </div>
     );
