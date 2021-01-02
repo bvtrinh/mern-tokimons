@@ -52,14 +52,11 @@ const TokiForm: React.FC<Props> = (props) => {
             label="Name"
             name="name"
             placeholder="Enter Name"
-            underText="Give your Tokimon a unique name"
             type="text"
+            errors={errors.name}
+            touched={touched.name}
             component={CustomInput}
           />
-          {errors.name && touched.name ? (
-            <div className={classes.errorMsg}>{errors.name}</div>
-          ) : null}
-
           <Row>
             <Col>
               <Field
@@ -67,11 +64,10 @@ const TokiForm: React.FC<Props> = (props) => {
                 name="height"
                 placeholder="Enter Height"
                 type="number"
+                errors={errors.height}
+                touched={touched.height}
                 component={CustomInput}
               />
-              {errors.height && touched.height ? (
-                <div className={classes.errorMsg}>{errors.height}</div>
-              ) : null}
             </Col>
 
             <Col>
@@ -80,11 +76,10 @@ const TokiForm: React.FC<Props> = (props) => {
                 name="weight"
                 placeholder="Enter Weight"
                 type="number"
+                errors={errors.weight}
+                touched={touched.weight}
                 component={CustomInput}
               />
-              {errors.weight && touched.weight ? (
-                <div className={classes.errorMsg}>{errors.weight}</div>
-              ) : null}
             </Col>
           </Row>
 
@@ -95,11 +90,10 @@ const TokiForm: React.FC<Props> = (props) => {
                 name="electric"
                 placeholder="Enter Electric Level"
                 type="number"
+                errors={errors.electric}
+                touched={touched.electric}
                 component={CustomInput}
               />
-              {errors.electric && touched.electric ? (
-                <div className={classes.errorMsg}>{errors.electric}</div>
-              ) : null}
             </Col>
 
             <Col>
@@ -108,11 +102,10 @@ const TokiForm: React.FC<Props> = (props) => {
                 name="fly"
                 placeholder="Enter Fly Level"
                 type="number"
+                errors={errors.fly}
+                touched={touched.fly}
                 component={CustomInput}
               />
-              {errors.fly && touched.fly ? (
-                <div className={classes.errorMsg}>{errors.fly}</div>
-              ) : null}
             </Col>
           </Row>
 
@@ -123,11 +116,10 @@ const TokiForm: React.FC<Props> = (props) => {
                 name="fight"
                 placeholder="Enter Fight Level"
                 type="number"
+                errors={errors.fight}
+                touched={touched.fight}
                 component={CustomInput}
               />
-              {errors.fight && touched.fight ? (
-                <div className={classes.errorMsg}>{errors.fight}</div>
-              ) : null}
             </Col>
 
             <Col>
@@ -136,11 +128,10 @@ const TokiForm: React.FC<Props> = (props) => {
                 name="fire"
                 placeholder="Enter Fire Level"
                 type="number"
+                errors={errors.fire}
+                touched={touched.fire}
                 component={CustomInput}
               />
-              {errors.fire && touched.fire ? (
-                <div className={classes.errorMsg}>{errors.fire}</div>
-              ) : null}
             </Col>
           </Row>
 
@@ -151,11 +142,10 @@ const TokiForm: React.FC<Props> = (props) => {
                 name="ice"
                 placeholder="Enter Ice Level"
                 type="number"
+                errors={errors.ice}
+                touched={touched.ice}
                 component={CustomInput}
               />
-              {errors.ice && touched.ice ? (
-                <div className={classes.errorMsg}>{errors.ice}</div>
-              ) : null}
             </Col>
             <Col>
               <Field
@@ -163,11 +153,10 @@ const TokiForm: React.FC<Props> = (props) => {
                 name="water"
                 placeholder="Enter Water Level"
                 type="number"
+                errors={errors.water}
+                touched={touched.water}
                 component={CustomInput}
               />
-              {errors.water && touched.water ? (
-                <div className={classes.errorMsg}>{errors.water}</div>
-              ) : null}
             </Col>
           </Row>
 

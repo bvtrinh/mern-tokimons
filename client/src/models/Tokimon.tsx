@@ -1,7 +1,7 @@
 import * as yup from "yup";
 
 const TokiSchema = yup.object().shape({
-  name: yup.string().required("Required").max(256),
+  name: yup.string().required("Required").max(128, "Max characters is 128"),
   height: yup.number().required("Required").positive("Must be positive"),
   weight: yup.number().required("Required").positive("Must be positive"),
   electric: yup

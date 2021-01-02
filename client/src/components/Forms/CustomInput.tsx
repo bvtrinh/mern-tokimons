@@ -1,12 +1,14 @@
 import React from "react";
 import { FieldProps } from "formik";
 import Form from "react-bootstrap/Form";
+import classes from "./CustomInput.module.css";
 
 interface Props extends FieldProps {
   label: string;
   placeholder: string;
-  underText: string;
   type: string;
+  errors: string;
+  touched: boolean;
 }
 
 const CustomInput: React.FC<Props> = (props) => {
@@ -18,8 +20,8 @@ const CustomInput: React.FC<Props> = (props) => {
         type={props.type}
         placeholder={props.placeholder}
       />
-      {props.underText ? (
-        <Form.Text className="text-muted">{props.underText}</Form.Text>
+      {props.errors && props.touched ? (
+        <div className={classes.errorMsg}>{props.errors}</div>
       ) : null}
     </Form.Group>
   );
