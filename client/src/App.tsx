@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import NavBar from "./components/NavBar";
+import CustomNavBar from "./components/CustomNavBar";
 import Home from "./containers/Home";
 import classes from "./App.module.css";
 import { Route, Switch } from "react-router-dom";
-import Modal from "./components/Modal";
 
 class App extends Component {
   state = {
@@ -19,11 +18,8 @@ class App extends Component {
   render() {
     return (
       <div className={classes.App}>
-        <NavBar clickedCreateModal={this.toggleCreateModalHandler} />
-        <Modal
-          modal={this.state.isCreateModalOpen}
-          toggle={this.toggleCreateModalHandler}
-        />
+        <CustomNavBar />
+        {/* <TokiModal /> */}
         <Switch>
           <Route path="/" component={Home} />
         </Switch>

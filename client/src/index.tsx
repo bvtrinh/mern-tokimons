@@ -2,11 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import "@fortawesome/fontawesome-free/css/all.min.css";
-import "bootstrap-css-only/css/bootstrap.min.css";
-import "mdbreact/dist/css/mdb.css";
-
 import { BrowserRouter as Router } from "react-router-dom";
+
+import "bootstrap/dist/css/bootstrap.min.css";
+
 const app = (
   <Router>
     <App />
@@ -14,7 +13,7 @@ const app = (
 );
 
 ReactDOM.render(
-  <React.StrictMode>{app}</React.StrictMode>,
+  <React.Fragment>{app}</React.Fragment>,
   document.getElementById("root")
 );
 
