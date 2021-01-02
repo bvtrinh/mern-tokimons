@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
+import Image from "react-bootstrap/Image";
 import { VscDiffAdded } from "react-icons/vsc";
 import { IoLogInOutline, IoPersonAdd, IoLogOutOutline } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
@@ -50,7 +51,12 @@ const CustomNavBar: React.FC<Props> = (props) => {
           className={classes.bgColor}
         >
           <Navbar.Brand href="#home">
-            <img src="/images/full-tokimon.png" alt="brand-logo" width="100" />
+            <Image
+              fluid
+              src="/images/full-tokimon.png"
+              alt="brand-logo"
+              width="100"
+            />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
