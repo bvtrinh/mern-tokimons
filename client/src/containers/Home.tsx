@@ -17,6 +17,7 @@ interface Props {
 
 interface StateTypes {
   tokimons: Tokimon[];
+  searchStr: string;
 }
 
 class Home extends Component<Props, StateTypes> {
@@ -27,6 +28,7 @@ class Home extends Component<Props, StateTypes> {
       { id: "a3", name: "Electivire", type: "electric", value: 90 },
       { id: "a4", name: "Articuno", type: "ice", value: 99 },
     ],
+    searchStr: "",
   };
 
   // On render we should retrieve the tokimons
@@ -34,14 +36,30 @@ class Home extends Component<Props, StateTypes> {
     // Make api call to get Tokimons and store in state
   }
 
+  searchHandler = (e: any) => {
+    this.setState({ searchStr: e.target.value });
+  };
+
+  searchResults = () => {
+    const substr = this.state.searchStr;
+    return this.state.tokimons.filter((t) => {
+      return t.name.toLowerCase().includes(substr);
+    });
+  };
+
   render() {
+    const filteredTokis = this.searchResults();
     const tokis =
-      this.state.tokimons.length > 0 ? (
-        <TokiList tokimons={this.state.tokimons} />
-      ) : null;
+      filteredTokis.length > 0 ? (
+        <TokiList tokimons={filteredTokis} />
+      ) : (
+        <h2 style={{ textAlign: "center" }}>No Tokimons Found!</h2>
+      );
     const search = this.props.loggedIn ? (
       <InputGroup className="mb-3">
         <FormControl
+          type="text"
+          onChange={this.searchHandler}
           placeholder="Search for your Tokimons!"
           aria-label="tokimon-search"
         />
