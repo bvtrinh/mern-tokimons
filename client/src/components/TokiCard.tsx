@@ -8,7 +8,7 @@ const TokiCard: React.FC<Tokimon & { key: string }> = (props) => {
   return (
     <Col lg={3} md={6}>
       <Card className={classes.card}>
-        <div className={classes.cardBg}>
+        <div className={`${classes.cardBg} ${classes[props.type]}`}>
           <h4 className={classes.cardValText}>{props.value}</h4>
         </div>
         <Card.Body>

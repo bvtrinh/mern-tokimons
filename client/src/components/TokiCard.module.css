@@ -15,3 +15,27 @@
   width: 14rem;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
+.electric {
+  background: rgba(255, 255, 0, 0.5);
+}
+
+.fly {
+  background: rgba(192, 192, 192, 0.5);
+}
+
+.fight {
+  background: rgba(255, 99, 132, 0.5);
+}
+
+.fire {
+  background: rgba(255, 140, 0, 0.5);
+}
+
+.ice {
+  background: rgba(0, 255, 255, 0.5);
+}
+
+.water {
+  background: rgba(0, 191, 255, 0.5);
+}
