@@ -1,0 +1,17 @@
+.cardBg {
+  width: 14rem;
+  height: 8rem;
+  background: #ccc;
+}
+
+.cardValText {
+  font-size: 3em;
+  color: #808080;
+  margin: 0.8em 0.5em;
+}
+
+.card {
+  margin: 1em 1em;
+  width: 14rem;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
