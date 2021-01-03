@@ -10,7 +10,7 @@ import { resolve } from "path";
 import { config } from "dotenv";
 import { join } from "path";
 import { connect } from "./models/db";
-import expressValidator from "express-validator";
+import cors from "cors";
 import connectMongo from "connect-mongo";
 import Mongoose from "mongoose";
 import Routes from "./routes";
@@ -24,6 +24,7 @@ const app = express();
 app.use(json());
 app.use(express.static(join(__dirname, "public")));
 app.use(urlencoded({ extended: true }));
+app.use(cors());
 
 // Import in routes
 Routes(app);

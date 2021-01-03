@@ -14,7 +14,6 @@ const getHighestType = (elements: IElement) => {
     }
     total += val;
   }
-  console.log(total);
 
   return { type: bestType, total: total };
 };
