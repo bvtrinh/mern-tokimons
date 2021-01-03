@@ -14,7 +14,7 @@ export interface ITokimon extends Document {
   name: string;
   height: number;
   weight: number;
-  element: IElement;
+  elements: IElement;
   type: string;
   total: number;
   createdOn: Date;

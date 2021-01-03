@@ -10,6 +10,7 @@ import { resolve } from "path";
 import { config } from "dotenv";
 import { join } from "path";
 import { connect } from "./models/db";
+import expressValidator from "express-validator";
 import connectMongo from "connect-mongo";
 import Mongoose from "mongoose";
 import Routes from "./routes";
