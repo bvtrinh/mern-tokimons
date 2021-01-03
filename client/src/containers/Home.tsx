@@ -78,7 +78,7 @@ class Home extends Component<Props, StateTypes> {
           <h3>Welcome to the world of Tokimons!</h3>
         </Jumbotron>
         {search}
-        {tokis}
+        {this.props.loggedIn ? tokis : null}
       </Container>
     );
   }
