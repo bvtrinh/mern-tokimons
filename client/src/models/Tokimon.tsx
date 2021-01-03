@@ -1,6 +1,6 @@
 export interface Tokimon {
-  id: string;
+  _id: string;
   name: string;
   type: string;
-  value: number;
+  total: number;
 }

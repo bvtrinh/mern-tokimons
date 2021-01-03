@@ -8,7 +8,7 @@ import FormControl from "react-bootstrap/FormControl";
 import { FcSearch } from "react-icons/fc";
 import TokiList from "../components/TokiList";
 import { Tokimon } from "../models/Tokimon";
-import { getAllTokis } from "../api/Api";
+import { getAllTokis } from "../api/Tokimon.api";
 
 import classes from "./Home.module.css";
 
@@ -23,20 +23,17 @@ interface StateTypes {
 
 class Home extends Component<Props, StateTypes> {
   state = {
-    tokimons: [
-      { id: "a1", name: "Lapras", type: "water", value: 80 },
-      { id: "a2", name: "Charizard", type: "fire", value: 95 },
-      { id: "a3", name: "Electivire", type: "electric", value: 90 },
-      { id: "a4", name: "Articuno", type: "ice", value: 99 },
-    ],
+    tokimons: [] as Tokimon[],
     searchStr: "",
   };
 
   // On render we should retrieve the tokimons
   async componentDidMount() {
     // Make api call to get Tokimons and store in state
-    const tokis = await getAllTokis();
-    console.log(tokis);
+    const res = await getAllTokis();
+    const tokimons: Tokimon[] = res?.data.tokimons;
+    console.log(tokimons);
+    this.setState({ tokimons: tokimons });
   }
 
   searchHandler = (e: any) => {

@@ -10,11 +10,11 @@ const TokiCard: React.FC<Tokimon & { key: string }> = (props) => {
     <Col lg={3} md={6}>
       <Card className={classes.card}>
         <div className={`${classes.cardBg} ${classes[props.type]}`}>
-          <h4 className={classes.cardValText}>{props.value}</h4>
+          <h4 className={classes.cardValText}>{props.total}</h4>
         </div>
         <Card.Body>
           <h5>
-            <NavLink to={"/t/" + props.id}>{props.name}</NavLink>
+            <NavLink to={"/t/" + props._id}>{props.name}</NavLink>
           </h5>
         </Card.Body>
       </Card>
