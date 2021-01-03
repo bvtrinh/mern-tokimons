@@ -8,6 +8,7 @@ import FormControl from "react-bootstrap/FormControl";
 import { FcSearch } from "react-icons/fc";
 import TokiList from "../components/TokiList";
 import { Tokimon } from "../models/Tokimon";
+import { getAllTokis } from "../api/Api";
 
 import classes from "./Home.module.css";
 
@@ -32,8 +33,10 @@ class Home extends Component<Props, StateTypes> {
   };
 
   // On render we should retrieve the tokimons
-  componentDidMount() {
+  async componentDidMount() {
     // Make api call to get Tokimons and store in state
+    const tokis = await getAllTokis();
+    console.log(tokis);
   }
 
   searchHandler = (e: any) => {
