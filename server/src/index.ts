@@ -11,7 +11,8 @@ import { config } from "dotenv";
 import { join } from "path";
 import { connect } from "./models/db";
 import connectMongo from "connect-mongo";
-import mongoose from "mongoose";
+import Mongoose from "mongoose";
+import Routes from "./routes";
 const MongoStore = connectMongo(session);
 
 // Dotenv config
@@ -23,6 +24,9 @@ app.use(json());
 app.use(express.static(join(__dirname, "public")));
 app.use(urlencoded({ extended: true }));
 
+// Import in routes
+Routes(app);
+
 // Connect to DB
 connect();
 
@@ -33,7 +37,7 @@ app.use(
     // maxAge: (24 * 60 * 60 * 1000) as number,
     resave: true,
     saveUninitialized: true,
-    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    store: new MongoStore({ mongooseConnection: Mongoose.connection }),
     cookie: {
       maxAge: 24 * 60 * 60 * 1000,
     },
