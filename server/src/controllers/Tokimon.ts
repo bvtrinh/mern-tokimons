@@ -60,9 +60,42 @@ export const getAllToki: RequestHandler = async (req, res) => {
     return res.status(200).json({ tokimons: tokimons });
   } catch (err) {
     console.log(err);
+    return res.status(500).json({ error: err });
   }
 };
 
-export const updateToki: RequestHandler = async (req, res) => {};
+export const updateToki: RequestHandler = async (req, res) => {
+  // Extract information from URL
+  const id = req.params._id;
+  const newToki: ITokimon = req.body;
+
+  // Find the Tokimon in DB
+  try {
+    await Tokimon.findById(id);
+
+    // Validate the new fields
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
+    // Update in case the Tokimon has a new higher value to determine its type
+    const elements = newToki.elements;
+    const { type, total } = getHighestType(elements);
+    newToki.type = type;
+    newToki.total = total;
+
+    // Update on DB
+    await Tokimon.updateOne({ id: id }, newToki);
+
+    return res
+      .status(201)
+      .json({ message: "Updated the Tokimon.", updatedToki: newToki });
+  } catch (err) {
+    // If it hits here most likely unable to find Tokimon
+    console.log(err);
+    return res.status(500).json({ error: err });
+  }
+};
 
 export const deleteToki: RequestHandler = async (req, res) => {};
