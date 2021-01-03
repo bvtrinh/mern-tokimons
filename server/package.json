@@ -1,0 +1,26 @@
+{
+  "name": "mern-tokimons-server",
+  "version": "1.0.0",
+  "description": "An Express REST API to retrieve data from MongoDB",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon dist/index.js"
+  },
+  "author": "Tyler Trinh",
+  "license": "ISC",
+  "dependencies": {
+    "connect-mongo": "^3.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "mongoose": "^5.11.9"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.9",
+    "@types/express-session": "^1.17.3",
+    "@types/mongoose": "^5.10.3",
+    "@types/node": "^14.14.19",
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.6"
+  }
+}
