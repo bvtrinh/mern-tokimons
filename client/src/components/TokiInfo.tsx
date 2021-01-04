@@ -8,24 +8,30 @@ import { Bar } from "@reactchartjs/react-chart.js";
 import { ChartSettings, options } from "../config/ChartSettings";
 import { FaEdit } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
+import { RouteComponentProps } from "react-router-dom";
+import { getOneToki } from "../api/Tokimon.api";
 
-const elements = ["electric", "fly", "fight", "fire", "ice", "water"];
-
-interface Props {
+interface IReactRouterParams {
   id: string;
 }
 
 interface Element {
   [key: string]: number;
 }
-interface Tokimon {
+interface State {
   name: string;
   height: number;
   weight: number;
   elements: Element;
+  type: string;
+  total: number;
+  loaded: boolean;
 }
 
-class TokiInfo extends Component<Props, Tokimon> {
+class TokiInfo extends Component<
+  RouteComponentProps<IReactRouterParams>,
+  State
+> {
   state = {
     name: "Lapras",
     height: 20,
@@ -38,27 +44,32 @@ class TokiInfo extends Component<Props, Tokimon> {
       ice: 99,
       water: 95,
     },
+    type: "water",
+    total: 300,
+    loaded: false,
   };
+
+  async componentDidMount() {
+    const id = this.props.match.params.id;
+    const { data } = await getOneToki(id);
+
+    this.setState(data);
+    this.setState({ loaded: !this.state.loaded });
+  }
 
   // Need this to access the object via [] and strings
   getKeyValue = <U extends keyof T, T extends object>(key: U) => (obj: T) =>
     obj[key];
 
   render() {
-    const totalLvl = elements.reduce((sum, val) => {
-      return (
-        sum + this.getKeyValue<keyof Element, Element>(val)(this.state.elements)
-      );
-    }, 0);
-
     ChartSettings.datasets[0].data = Object.values(this.state.elements);
 
-    return (
-      <Container>
+    const content = this.state.loaded ? (
+      <React.Fragment>
         <Row>
           <Col className={classes.graphDiv}>
             <h1>{this.state.name}</h1>
-            <h4>Total Level: {totalLvl}</h4>
+            <h4>Total Level: {this.state.total}</h4>
             <h4>
               Weight: {this.state.weight} | Height: {this.state.height}
             </h4>
@@ -75,8 +86,10 @@ class TokiInfo extends Component<Props, Tokimon> {
         <div className="mt-5">
           <Bar type="bar" data={ChartSettings} options={options} />
         </div>
-      </Container>
-    );
+      </React.Fragment>
+    ) : null;
+
+    return <Container>{content}</Container>;
   }
 }
 

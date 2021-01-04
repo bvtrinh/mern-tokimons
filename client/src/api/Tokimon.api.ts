@@ -21,7 +21,18 @@ export const createToki = async (toki: FullTokimon) => {
 
 export const updateToki = async (toki: FullTokimon) => {
   try {
-    const res = await axios.patch("/t", toki);
+    const id = toki._id;
+    const res = await axios.patch(`/t/${id}`, toki);
+    return res;
+  } catch (err) {
+    console.log(err.response);
+    return err.response;
+  }
+};
+
+export const getOneToki = async (id: string) => {
+  try {
+    const res = await axios.get(`/t/${id}`);
     return res;
   } catch (err) {
     console.log(err.response);
