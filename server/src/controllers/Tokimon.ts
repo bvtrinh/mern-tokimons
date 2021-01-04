@@ -68,7 +68,7 @@ export const getOneToki: RequestHandler = async (req, res) => {
   try {
     const id = req.params.id;
     const tokimon = await Tokimon.findById(id);
-    return res.status(200).json({ tokimon: tokimon });
+    return res.status(200).json(tokimon);
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: err });
