@@ -42,14 +42,18 @@ export const createToki: RequestHandler = async (req, res) => {
     await newToki.save();
 
     return res
-      .status(201)
+      .status(200)
       .json({ message: "Created the Tokimon.", createdToki: newToki });
   } catch (err) {
     // In case of duplicate key errors
     if (err.code === 11000) {
+      console.log(err.keyValue);
+
       return res
         .status(422)
-        .json({ errors: "Duplicate key error", key: err.keyValue });
+        .json({
+          errors: `Duplicate key error (${JSON.stringify(err.keyValue)})`,
+        });
     }
   }
 };

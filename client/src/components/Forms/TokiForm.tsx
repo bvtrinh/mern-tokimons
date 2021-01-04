@@ -6,6 +6,10 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import classes from "./TokiForm.module.css";
+import { createToki, updateToki } from "../../api/Tokimon.api";
+import { Element, FullTokimon } from "../../models/Tokimon";
+import { OPS } from "../../models/CRUD.enum";
+import { AxiosResponse } from "axios";
 
 interface FormValues {
   name: string;
@@ -21,13 +25,56 @@ interface FormValues {
 
 interface Props {
   toggleModal: () => void;
+  type: OPS;
+  apiResponse: (res: AxiosResponse) => void;
 }
 
+const getHighestType = (elements: Element) => {
+  let bestType: string = "";
+  let bestVal: number = -1;
+  let total: number = 0;
+
+  for (let [key, val] of Object.entries(elements)) {
+    if (val > bestVal) {
+      bestVal = val;
+      bestType = key;
+    }
+    total += val;
+  }
+
+  return { type: bestType, total: total };
+};
+
 const TokiForm: React.FC<Props> = (props) => {
-  const submit = (values: FormValues) => {
+  const submit = async (values: FormValues) => {
+    const {
+      name,
+      height,
+      weight,
+      electric,
+      fly,
+      fight,
+      fire,
+      ice,
+      water,
+    } = values;
+    const elements = { electric, fly, fight, fire, ice, water };
+    const { type, total } = getHighestType(elements);
+    const toki: FullTokimon = {
+      name,
+      height,
+      weight,
+      elements,
+      type,
+      total,
+    };
+    if (props.type === OPS.CREATE) {
+      props.apiResponse(await createToki(toki));
+    } else if (props.type === OPS.UPDATE) {
+      props.apiResponse(await updateToki(toki));
+    }
+
     props.toggleModal();
-    // Should add to the state of the home page and make api call
-    console.log(values);
   };
   const initialValues: FormValues = {
     name: "",

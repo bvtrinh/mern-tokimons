@@ -27,12 +27,9 @@ class Home extends Component<Props, StateTypes> {
     searchStr: "",
   };
 
-  // On render we should retrieve the tokimons
   async componentDidMount() {
-    // Make api call to get Tokimons and store in state
     const res = await getAllTokis();
     const tokimons: Tokimon[] = res?.data.tokimons;
-    console.log(tokimons);
     this.setState({ tokimons: tokimons });
   }
 

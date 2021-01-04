@@ -1,6 +1,5 @@
 import React from "react";
 import Modal from "react-bootstrap/Modal";
-import TokiForm from "./Forms/TokiForm";
 interface Props {
   show: boolean;
   onHide: () => void;
@@ -20,9 +19,7 @@ const TokiModal: React.FC<Props> = (props) => {
           {props.title}
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <TokiForm toggleModal={props.onHide} />
-      </Modal.Body>
+      <Modal.Body>{props.children}</Modal.Body>
     </Modal>
   );
 };

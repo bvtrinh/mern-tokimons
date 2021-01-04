@@ -12,7 +12,7 @@ const TokiList: React.FC<Props> = (props) => {
   return (
     <Row className={classes.cardGrid}>
       {props.tokimons.map((t) => {
-        return <TokiCard {...t} key={t._id} />;
+        return <TokiCard {...t} key={t.name} />;
       })}
     </Row>
   );
