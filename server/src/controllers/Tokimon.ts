@@ -47,13 +47,9 @@ export const createToki: RequestHandler = async (req, res) => {
   } catch (err) {
     // In case of duplicate key errors
     if (err.code === 11000) {
-      console.log(err.keyValue);
-
-      return res
-        .status(422)
-        .json({
-          errors: `Duplicate key error (${JSON.stringify(err.keyValue)})`,
-        });
+      return res.status(422).json({
+        errors: `Duplicate key error (${JSON.stringify(err.keyValue)})`,
+      });
     }
   }
 };

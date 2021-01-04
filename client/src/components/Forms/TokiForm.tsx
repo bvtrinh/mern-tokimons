@@ -73,7 +73,6 @@ const TokiForm: React.FC<Props> = (props) => {
     } else if (props.type === OPS.UPDATE) {
       props.apiResponse(await updateToki(toki));
     }
-
     props.toggleModal();
   };
   const initialValues: FormValues = {
