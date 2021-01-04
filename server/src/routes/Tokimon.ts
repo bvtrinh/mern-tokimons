@@ -3,6 +3,7 @@ import { Router } from "express";
 import {
   createToki,
   getAllToki,
+  getOneToki,
   updateToki,
   deleteToki,
 } from "../controllers/Tokimon";
@@ -12,6 +13,7 @@ const router = Router();
 
 router.post("/", tokiValidation, createToki);
 router.get("/", getAllToki);
+router.get("/:id", getOneToki);
 router.patch("/:id", tokiValidation, updateToki);
 router.delete("/:id", deleteToki);
 
