@@ -57,7 +57,12 @@ class App extends Component<Props, StateTypes> {
 
   render() {
     const alert = this.state.submitted ? (
-      <Alert className="mt-3" variant={this.state.error ? "danger" : "success"}>
+      <Alert
+        onClose={() => this.setState({ submitted: false })}
+        dismissible
+        className="mt-3"
+        variant={this.state.error ? "danger" : "success"}
+      >
         {this.state.error
           ? `Creation Error: ${this.state.errorMsg}`
           : "Create Success!"}
