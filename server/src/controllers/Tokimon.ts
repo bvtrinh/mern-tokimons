@@ -66,13 +66,11 @@ export const getAllToki: RequestHandler = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    return res
-      .status(500)
-      .json({
-        payload: err,
-        message: "Error retrieving Tokimons",
-        error: true,
-      });
+    return res.status(500).json({
+      payload: err,
+      message: "Error retrieving Tokimons",
+      error: true,
+    });
   }
 };
 
@@ -124,7 +122,11 @@ export const updateToki: RequestHandler = async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "Updated the Tokimon.", error: false });
+      .json({
+        payload: newToki,
+        message: "Updated the Tokimon.",
+        error: false,
+      });
   } catch (err) {
     // If it hits here most likely unable to find Tokimon
     console.log(err);

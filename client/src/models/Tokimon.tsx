@@ -14,6 +14,12 @@ export interface Element {
   water: number;
 }
 
+export interface TokimonInfo extends Tokimon {
+  elements: Element;
+  height: number;
+  weight: number;
+}
+
 // API Format follows this interface
 export interface FullTokimon {
   _id?: string;

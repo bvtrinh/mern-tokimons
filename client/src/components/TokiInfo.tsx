@@ -12,15 +12,17 @@ import { RouteComponentProps } from "react-router-dom";
 import { getOneToki, updateToki } from "../api/Tokimon.api";
 import TokiModal from "./TokiModal";
 import TokiForm from "./Forms/TokiForm";
-import { TokimonFormValues, FullTokimon } from "../models/Tokimon";
+import { TokimonFormValues, FullTokimon, TokimonInfo } from "../models/Tokimon";
 import { ResponseFormat } from "../models/Response";
+import Alert from "react-bootstrap/Alert";
 
 interface IReactRouterParams {
   id: string;
 }
 
-interface State extends FullTokimon {
+interface State extends TokimonInfo {
   loaded: boolean;
+  submitted: boolean;
   isUpdateModalOpen: boolean;
   isDeleteConfirmOpen: boolean;
   error: boolean;
@@ -32,6 +34,7 @@ class TokiInfo extends Component<
   State
 > {
   state = {
+    _id: "",
     name: "",
     height: 1,
     weight: 1,
@@ -46,6 +49,7 @@ class TokiInfo extends Component<
     type: "",
     total: 1,
     loaded: false,
+    submitted: false,
     isUpdateModalOpen: false,
     isDeleteConfirmOpen: false,
     error: false,
@@ -54,10 +58,20 @@ class TokiInfo extends Component<
 
   async componentDidMount() {
     const id = this.props.match.params.id;
-    const { data } = await getOneToki(id);
+    const { name, height, weight, elements, type, total } = (await (
+      await getOneToki(id)
+    ).payload) as TokimonInfo;
 
-    this.setState(data);
-    this.setState({ loaded: !this.state.loaded });
+    this.setState({
+      _id: id,
+      name,
+      height,
+      weight,
+      elements,
+      type,
+      total,
+      loaded: !this.state.loaded,
+    });
   }
 
   toggleUpdateModalHandler = () => {
@@ -66,10 +80,6 @@ class TokiInfo extends Component<
 
   toggleDeleteConfirmHandler = () => {
     this.setState({ isDeleteConfirmOpen: !this.state.isDeleteConfirmOpen });
-  };
-
-  responseHandler = () => {
-    console.log("response status gooood");
   };
 
   apiReponse = (res: ResponseFormat) => {
@@ -98,18 +108,31 @@ class TokiInfo extends Component<
     } = values;
     const elements = { electric, fly, fight, fire, ice, water };
     const toki: FullTokimon = {
+      _id: this.state._id,
       name,
       height,
       weight,
       elements,
     };
+
     const res = await updateToki(toki);
     this.apiReponse(res);
+    this.setState({
+      name,
+      height,
+      weight,
+      elements,
+      type: (res.payload as TokimonInfo).type,
+      total: (res.payload as TokimonInfo).total,
+      submitted: true,
+    });
     this.toggleUpdateModalHandler();
   };
 
   render() {
     ChartSettings.datasets[0].data = Object.values(this.state.elements);
+    const updatedChartSettings = { ...ChartSettings };
+
     const { name, height, weight } = this.state;
     const { electric, fly, fight, fire, ice, water } = this.state.elements;
     const currentFormValues = {
@@ -124,16 +147,30 @@ class TokiInfo extends Component<
       water,
     };
 
+    const alert = this.state.submitted ? (
+      <Alert
+        onClose={() => this.setState({ submitted: false })}
+        dismissible
+        className="mt-3"
+        variant={this.state.error ? "danger" : "success"}
+      >
+        {this.state.error
+          ? `Creation Error: ${this.state.responseMessage}`
+          : this.state.responseMessage}
+      </Alert>
+    ) : null;
+
     const content = this.state.loaded ? (
       <React.Fragment>
+        {alert}
         <TokiModal
           show={this.state.isUpdateModalOpen}
           onHide={this.toggleUpdateModalHandler}
           title="Update your Tokimon!"
         >
           <TokiForm
+            submit={this.updateSubmitHandler}
             previousValues={currentFormValues}
-            apiResponse={this.responseHandler}
             toggleModal={this.toggleUpdateModalHandler}
           />
         </TokiModal>
@@ -142,7 +179,7 @@ class TokiInfo extends Component<
             <h1>{this.state.name}</h1>
             <h4>Total Level: {this.state.total}</h4>
             <h4>
-              Weight: {this.state.weight} | Height: {this.state.height}
+              Height: {this.state.height} | Weight: {this.state.weight}
             </h4>
           </Col>
           <Col className={classes.btnRight}>
@@ -159,7 +196,7 @@ class TokiInfo extends Component<
           </Col>
         </Row>
         <div className="mt-5">
-          <Bar type="bar" data={ChartSettings} options={options} />
+          <Bar type="bar" data={updatedChartSettings} options={options} />
         </div>
       </React.Fragment>
     ) : null;

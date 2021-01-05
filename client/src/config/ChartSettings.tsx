@@ -1,4 +1,4 @@
-export const ChartSettings = {
+export let ChartSettings = {
   labels: ["Electric", "Fly", "Fight", "Fire", "Ice", "Water"],
   type: "bar",
   datasets: [

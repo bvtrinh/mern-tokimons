@@ -8,13 +8,15 @@ import TokiInfo from "./components/TokiInfo";
 import TokiForm from "./components/Forms/TokiForm";
 import Alert from "react-bootstrap/Alert";
 import Container from "react-bootstrap/Container";
-import { AxiosResponse } from "axios";
+import { ResponseFormat } from "./models/Response";
+import { TokimonFormValues, FullTokimon } from "./models/Tokimon";
+import { createToki } from "./api/Tokimon.api";
 
 interface StateTypes {
   isCreateModalOpen: boolean;
   loggedIn: boolean;
   error: boolean;
-  errorMsg: string;
+  message: string;
   submitted: boolean;
 }
 interface Props {}
@@ -24,7 +26,7 @@ class App extends Component<Props, StateTypes> {
     isCreateModalOpen: false,
     loggedIn: true,
     error: false,
-    errorMsg: "",
+    message: "",
     submitted: false,
   };
 
@@ -42,14 +44,39 @@ class App extends Component<Props, StateTypes> {
     this.setState({ loggedIn: false });
   };
 
-  responseHandler = (res: AxiosResponse) => {
-    if (res.status === 200) {
+  createSubmitHandler = async (values: TokimonFormValues) => {
+    // Format data for API call
+    const {
+      name,
+      height,
+      weight,
+      electric,
+      fly,
+      fight,
+      fire,
+      ice,
+      water,
+    } = values;
+    const elements = { electric, fly, fight, fire, ice, water };
+    const toki: FullTokimon = {
+      name,
+      height,
+      weight,
+      elements,
+    };
+    const res = await createToki(toki);
+    this.responseHandler(res);
+    this.toggleCreateModalHandler();
+  };
+
+  responseHandler = (res: ResponseFormat) => {
+    if (res.statusCode === 200) {
       this.setState({ submitted: true, error: false });
     } else {
       this.setState({
         submitted: true,
-        error: true,
-        errorMsg: res.data.errors,
+        error: res.error,
+        message: res.message,
       });
     }
   };
@@ -63,8 +90,8 @@ class App extends Component<Props, StateTypes> {
         variant={this.state.error ? "danger" : "success"}
       >
         {this.state.error
-          ? `Creation Error: ${this.state.errorMsg}`
-          : "Create Success!"}
+          ? `Creation Error: ${this.state.message}`
+          : this.state.message}
       </Alert>
     ) : null;
 
@@ -83,7 +110,7 @@ class App extends Component<Props, StateTypes> {
           title="Create a Tokimon!"
         >
           <TokiForm
-            apiResponse={this.responseHandler}
+            submit={this.createSubmitHandler}
             toggleModal={this.toggleCreateModalHandler}
           />
         </TokiModal>

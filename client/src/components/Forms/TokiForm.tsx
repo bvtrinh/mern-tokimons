@@ -6,41 +6,15 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import classes from "./TokiForm.module.css";
-import { createToki } from "../../api/Tokimon.api";
-import { TokimonFormValues, FullTokimon } from "../../models/Tokimon";
-import { AxiosResponse } from "axios";
+import { TokimonFormValues } from "../../models/Tokimon";
 
 interface Props {
   toggleModal: () => void;
-  apiResponse: (res: AxiosResponse) => void;
   previousValues?: TokimonFormValues;
-  submitHandler?: () => void;
+  submit: (values: TokimonFormValues) => void;
 }
 
 const TokiForm: React.FC<Props> = (props) => {
-  const submit = async (values: TokimonFormValues) => {
-    const {
-      name,
-      height,
-      weight,
-      electric,
-      fly,
-      fight,
-      fire,
-      ice,
-      water,
-    } = values;
-    const elements = { electric, fly, fight, fire, ice, water };
-    const toki: FullTokimon = {
-      name,
-      height,
-      weight,
-      elements,
-    };
-    props.apiResponse(await createToki(toki));
-    props.toggleModal();
-  };
-
   const initialValues: TokimonFormValues = props.previousValues
     ? props.previousValues
     : {
@@ -59,7 +33,7 @@ const TokiForm: React.FC<Props> = (props) => {
     <Formik
       initialValues={initialValues}
       validationSchema={TokiSchema}
-      onSubmit={(values) => submit(values)}
+      onSubmit={(values) => props.submit(values)}
     >
       {({ errors, touched }) => (
         <Form>
