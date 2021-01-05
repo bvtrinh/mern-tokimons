@@ -14,8 +14,18 @@ export interface Element {
   water: number;
 }
 
-export interface FullTokimon extends Tokimon {
+// API Format follows this interface
+export interface FullTokimon {
+  _id?: string;
+  name: string;
+  height: number;
+  weight: number;
   elements: Element;
+}
+
+// Form format for create and update
+export interface TokimonFormValues extends Element {
+  name: string;
   height: number;
   weight: number;
 }

@@ -8,7 +8,6 @@ import TokiInfo from "./components/TokiInfo";
 import TokiForm from "./components/Forms/TokiForm";
 import Alert from "react-bootstrap/Alert";
 import Container from "react-bootstrap/Container";
-import { OPS } from "./models/CRUD.enum";
 import { AxiosResponse } from "axios";
 
 interface StateTypes {
@@ -84,7 +83,6 @@ class App extends Component<Props, StateTypes> {
           title="Create a Tokimon!"
         >
           <TokiForm
-            type={OPS.CREATE}
             apiResponse={this.responseHandler}
             toggleModal={this.toggleCreateModalHandler}
           />
