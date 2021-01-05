@@ -43,12 +43,14 @@ export const createToki: RequestHandler = async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "Created the Tokimon.", createdToki: newToki });
+      .json({ message: "Created the Tokimon.", error: false });
   } catch (err) {
     // In case of duplicate key errors
     if (err.code === 11000) {
       return res.status(422).json({
-        errors: `Duplicate key error (${JSON.stringify(err.keyValue)})`,
+        payload: err,
+        message: `Duplicate key error (${JSON.stringify(err.keyValue)})`,
+        error: true,
       });
     }
   }
@@ -57,10 +59,20 @@ export const createToki: RequestHandler = async (req, res) => {
 export const getAllToki: RequestHandler = async (req, res) => {
   try {
     const tokimons = await Tokimon.find();
-    return res.status(200).json({ tokimons: tokimons });
+    return res.status(200).json({
+      payload: tokimons,
+      message: "Success, retrieved all Tokimons",
+      error: false,
+    });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ error: err });
+    return res
+      .status(500)
+      .json({
+        payload: err,
+        message: "Error retrieving Tokimons",
+        error: true,
+      });
   }
 };
 
@@ -68,10 +80,18 @@ export const getOneToki: RequestHandler = async (req, res) => {
   try {
     const id = req.params.id;
     const tokimon = await Tokimon.findById(id);
-    return res.status(200).json(tokimon);
+    return res.status(200).json({
+      payload: tokimon,
+      message: "Success retrieving single Tokimon",
+      error: false,
+    });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ error: err });
+    return res.status(500).json({
+      payload: err,
+      message: "Error retrieving single Tokimon",
+      error: true,
+    });
   }
 };
 
@@ -104,11 +124,13 @@ export const updateToki: RequestHandler = async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "Updated the Tokimon.", updatedToki: newToki });
+      .json({ message: "Updated the Tokimon.", error: false });
   } catch (err) {
     // If it hits here most likely unable to find Tokimon
     console.log(err);
-    return res.status(500).json({ error: err.message });
+    return res
+      .status(500)
+      .json({ payload: err, message: err.message, error: true });
   }
 };
 
@@ -119,9 +141,13 @@ export const deleteToki: RequestHandler = async (req, res) => {
   // Delete the Tokimon in DB
   try {
     await Tokimon.deleteOne({ _id: id });
-    return res.status(200).json({ message: "Deleted the Tokimon." });
+    return res
+      .status(200)
+      .json({ message: "Deleted the Tokimon.", error: false });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ error: err.message });
+    return res
+      .status(500)
+      .json({ payload: err, message: err.message, error: true });
   }
 };

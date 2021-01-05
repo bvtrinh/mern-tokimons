@@ -19,18 +19,27 @@ interface Props {
 interface StateTypes {
   tokimons: Tokimon[];
   searchStr: string;
+  error: boolean;
+  message: string;
 }
 
 class Home extends Component<Props, StateTypes> {
   state = {
     tokimons: [] as Tokimon[],
     searchStr: "",
+    error: false,
+    message: "",
   };
 
   async componentDidMount() {
     const res = await getAllTokis();
-    const tokimons: Tokimon[] = res?.data.tokimons;
-    this.setState({ tokimons: tokimons });
+
+    const tokimons = res?.payload as Tokimon[];
+    this.setState({
+      tokimons: tokimons,
+      error: res.error,
+      message: res.message,
+    });
   }
 
   searchHandler = (e: any) => {
@@ -45,7 +54,7 @@ class Home extends Component<Props, StateTypes> {
   };
 
   render() {
-    const filteredTokis = this.searchResults();
+    const filteredTokis = this.state.tokimons ? this.searchResults() : [];
     const tokis =
       filteredTokis.length > 0 ? (
         <TokiList tokimons={filteredTokis} />

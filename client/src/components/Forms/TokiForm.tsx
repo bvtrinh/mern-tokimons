@@ -6,47 +6,19 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import classes from "./TokiForm.module.css";
-import { createToki, updateToki } from "../../api/Tokimon.api";
-import { Element, FullTokimon } from "../../models/Tokimon";
-import { OPS } from "../../models/CRUD.enum";
+import { createToki } from "../../api/Tokimon.api";
+import { TokimonFormValues, FullTokimon } from "../../models/Tokimon";
 import { AxiosResponse } from "axios";
-
-interface FormValues {
-  name: string;
-  height: number;
-  weight: number;
-  electric: number;
-  fly: number;
-  fight: number;
-  fire: number;
-  ice: number;
-  water: number;
-}
 
 interface Props {
   toggleModal: () => void;
-  type: OPS;
   apiResponse: (res: AxiosResponse) => void;
+  previousValues?: TokimonFormValues;
+  submitHandler?: () => void;
 }
 
-const getHighestType = (elements: Element) => {
-  let bestType: string = "";
-  let bestVal: number = -1;
-  let total: number = 0;
-
-  for (let [key, val] of Object.entries(elements)) {
-    if (val > bestVal) {
-      bestVal = val;
-      bestType = key;
-    }
-    total += val;
-  }
-
-  return { type: bestType, total: total };
-};
-
 const TokiForm: React.FC<Props> = (props) => {
-  const submit = async (values: FormValues) => {
+  const submit = async (values: TokimonFormValues) => {
     const {
       name,
       height,
@@ -59,33 +31,30 @@ const TokiForm: React.FC<Props> = (props) => {
       water,
     } = values;
     const elements = { electric, fly, fight, fire, ice, water };
-    const { type, total } = getHighestType(elements);
     const toki: FullTokimon = {
       name,
       height,
       weight,
       elements,
-      type,
-      total,
     };
-    if (props.type === OPS.CREATE) {
-      props.apiResponse(await createToki(toki));
-    } else if (props.type === OPS.UPDATE) {
-      props.apiResponse(await updateToki(toki));
-    }
+    props.apiResponse(await createToki(toki));
     props.toggleModal();
   };
-  const initialValues: FormValues = {
-    name: "",
-    height: 1,
-    weight: 1,
-    electric: 1,
-    fly: 1,
-    fight: 1,
-    fire: 1,
-    ice: 1,
-    water: 1,
-  };
+
+  const initialValues: TokimonFormValues = props.previousValues
+    ? props.previousValues
+    : {
+        name: "",
+        height: 1,
+        weight: 1,
+        electric: 1,
+        fly: 1,
+        fight: 1,
+        fire: 1,
+        ice: 1,
+        water: 1,
+      };
+
   return (
     <Formik
       initialValues={initialValues}
