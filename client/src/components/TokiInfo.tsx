@@ -1,20 +1,21 @@
 import React, { Component } from "react";
+import { RouteComponentProps } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Alert from "react-bootstrap/Alert";
 import classes from "./TokiInfo.module.css";
+import { getOneToki, updateToki, deleteToki } from "../api/Tokimon.api";
+import { TokimonFormValues, FullTokimon, TokimonInfo } from "../models/Tokimon";
+import { ResponseFormat } from "../models/Response";
 import { Bar } from "@reactchartjs/react-chart.js";
 import { ChartSettings, options } from "../config/ChartSettings";
 import { FaEdit } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
-import { RouteComponentProps } from "react-router-dom";
-import { getOneToki, updateToki } from "../api/Tokimon.api";
 import TokiModal from "./TokiModal";
 import TokiForm from "./Forms/TokiForm";
-import { TokimonFormValues, FullTokimon, TokimonInfo } from "../models/Tokimon";
-import { ResponseFormat } from "../models/Response";
-import Alert from "react-bootstrap/Alert";
+import ConfirmDelete from "./ConfirmDelete";
 
 interface IReactRouterParams {
   id: string;
@@ -129,6 +130,21 @@ class TokiInfo extends Component<
     this.toggleUpdateModalHandler();
   };
 
+  deleteSubmitHandler = async () => {
+    const res = await deleteToki(this.state._id);
+    if (res.statusCode === 200) {
+      this.props.history.push("/");
+    } else {
+      console.log(res);
+      this.setState({
+        error: true,
+        responseMessage: "Server side error",
+        submitted: true,
+      });
+      this.toggleDeleteConfirmHandler();
+    }
+  };
+
   render() {
     ChartSettings.datasets[0].data = Object.values(this.state.elements);
     const updatedChartSettings = { ...ChartSettings };
@@ -155,7 +171,7 @@ class TokiInfo extends Component<
         variant={this.state.error ? "danger" : "success"}
       >
         {this.state.error
-          ? `Creation Error: ${this.state.responseMessage}`
+          ? `Error: ${this.state.responseMessage}`
           : this.state.responseMessage}
       </Alert>
     ) : null;
@@ -172,6 +188,20 @@ class TokiInfo extends Component<
             submit={this.updateSubmitHandler}
             previousValues={currentFormValues}
             toggleModal={this.toggleUpdateModalHandler}
+          />
+        </TokiModal>
+        <TokiModal
+          show={this.state.isDeleteConfirmOpen}
+          onHide={this.toggleDeleteConfirmHandler}
+          title="Delete Tokimon?"
+        >
+          <ConfirmDelete
+            submit={this.deleteSubmitHandler}
+            toggleModal={this.toggleDeleteConfirmHandler}
+            name={this.state.name}
+            total={this.state.total}
+            height={this.state.height}
+            weight={this.state.weight}
           />
         </TokiModal>
         <Row>

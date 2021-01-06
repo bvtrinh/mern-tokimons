@@ -45,3 +45,12 @@ export const getOneToki = async (id: string): Promise<ResponseFormat> => {
     return { ...err.response.data, statusCode: err.response.status };
   }
 };
+
+export const deleteToki = async (id: string): Promise<ResponseFormat> => {
+  try {
+    const res = await axios.delete(`/t/${id}`);
+    return { ...res.data, statusCode: res.status };
+  } catch (err) {
+    return { ...err.response.data, statusCode: err.response.status };
+  }
+};
