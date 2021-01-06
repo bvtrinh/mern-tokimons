@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import CustomNavBar from "./components/CustomNavBar";
 import Home from "./containers/Home";
+import SignUp from "./containers/SignUp";
+import Login from "./containers/Login";
 import classes from "./App.module.css";
 import { Route, Switch } from "react-router-dom";
 import TokiModal from "./components/TokiModal";
@@ -24,7 +26,7 @@ interface Props {}
 class App extends Component<Props, StateTypes> {
   state = {
     isCreateModalOpen: false,
-    loggedIn: true,
+    loggedIn: false,
     error: false,
     message: "",
     submitted: false,
@@ -99,7 +101,6 @@ class App extends Component<Props, StateTypes> {
       <div className={classes.App}>
         <CustomNavBar
           loggedIn={this.state.loggedIn}
-          login={this.loginHandler}
           logout={this.logoutHandler}
           openCreateModal={this.toggleCreateModalHandler}
         />
@@ -121,6 +122,8 @@ class App extends Component<Props, StateTypes> {
             component={() => <Home loggedIn={this.state.loggedIn} />}
           />
           <Route path="/t/:id" component={TokiInfo} />
+          <Route path="/u/signup" component={SignUp} />
+          <Route path="/u/login" component={Login} />
         </Switch>
       </div>
     );

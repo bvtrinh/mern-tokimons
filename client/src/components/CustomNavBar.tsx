@@ -10,7 +10,6 @@ import { FaUser } from "react-icons/fa";
 import classes from "./CustomNavBar.module.css";
 
 interface Props {
-  login: () => void;
   logout: () => void;
   loggedIn: boolean;
   openCreateModal: () => void;
@@ -34,10 +33,10 @@ const CustomNavBar: React.FC<Props> = (props) => {
     </Nav>
   ) : (
     <Nav>
-      <Nav.Link>
+      <Nav.Link as={NavLink} to="/u/signup">
         <IoPersonAdd /> Sign Up
       </Nav.Link>
-      <Nav.Link onClick={props.login}>
+      <Nav.Link as={NavLink} to="/u/login">
         <IoLogInOutline /> Login
       </Nav.Link>
     </Nav>
