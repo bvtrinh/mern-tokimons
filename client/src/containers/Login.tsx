@@ -1,28 +1,86 @@
-import React from "react";
-import Form from "react-bootstrap/Form";
+import React, { useState } from "react";
+import { Formik, Form, Field } from "formik";
 import Button from "react-bootstrap/Button";
+import FormText from "react-bootstrap/FormText";
+import CustomInput from "../components/Forms/CustomInput";
 import CardPrompt from "../components/CardPrompt";
+import { userLoginSchema } from "../models/userSchema";
+import { login } from "../api/User.api";
+import { RouteComponentProps } from "react-router-dom";
+import classes from "./Login.module.css";
 
-const Login = () => {
-  const loginHandler = () => {
-    console.log("Login...");
+interface LoginForm {
+  email: string;
+  password: string;
+}
+
+interface LoginProps extends RouteComponentProps {
+  isAuthenticated: boolean;
+  setAuth: () => void;
+}
+
+const Login = (props: LoginProps) => {
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const loginHandler = async (values: LoginForm) => {
+    const { email, password } = values;
+    const res = await login(email, password);
+    if (res.statusCode === 200) {
+      // console.log(`Email: ${email}`);
+      // console.log(`Password: ${password}`);
+      props.setAuth();
+      props.history.push("/");
+    } else {
+      setErrorMsg(res.message);
+    }
+  };
+
+  const initialValues = {
+    email: "",
+    password: "",
   };
 
   return (
     <CardPrompt title="Login">
-      <Form onSubmit={loginHandler}>
-        <Form.Group>
-          <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="johndoe@mail.ca" />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Shh..." />
-        </Form.Group>
-        <Button type="Submit" variant="info" style={{ width: "100%" }}>
-          Login
-        </Button>
-      </Form>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={userLoginSchema}
+        onSubmit={(values) => loginHandler(values)}
+      >
+        {({ errors, touched, isValid }) => (
+          <Form>
+            <Field
+              label="Email"
+              name="email"
+              placeholder="johndoe@email.ca"
+              type="text"
+              errors={errors.email}
+              touched={touched.email}
+              component={CustomInput}
+            ></Field>
+            <Field
+              label="Password"
+              name="password"
+              placeholder="Shh..."
+              type="password"
+              errors={errors.password}
+              touched={touched.password}
+              component={CustomInput}
+            ></Field>
+            {!!errorMsg && (
+              <FormText className={classes.invalid}>{errorMsg}</FormText>
+            )}
+            <Button
+              disabled={!isValid}
+              type="submit"
+              variant="info"
+              style={{ width: "100%" }}
+            >
+              Login
+            </Button>
+          </Form>
+        )}
+      </Formik>
     </CardPrompt>
   );
 };

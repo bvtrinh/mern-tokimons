@@ -123,7 +123,16 @@ class App extends Component<Props, StateTypes> {
           />
           <Route path="/t/:id" component={TokiInfo} />
           <Route path="/u/signup" component={SignUp} />
-          <Route path="/u/login" component={Login} />
+          <Route
+            path="/u/login"
+            render={(props) => (
+              <Login
+                {...props}
+                setAuth={this.loginHandler}
+                isAuthenticated={this.state.loggedIn}
+              />
+            )}
+          />
         </Switch>
       </div>
     );
