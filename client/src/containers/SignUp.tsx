@@ -1,40 +1,122 @@
-import React from "react";
-import Form from "react-bootstrap/Form";
+import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import CardPrompt from "../components/CardPrompt";
+import { Formik, Form, Field } from "formik";
+import FormText from "react-bootstrap/FormText";
+import CustomInput from "../components/Forms/CustomInput";
+import { userSignupSchema } from "../models/userSchema";
+import { signup } from "../api/User.api";
+import { RouteComponentProps } from "react-router-dom";
+import classes from "./Login.module.css";
 
-const SignUp = () => {
+interface signupForm {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+interface signinProps extends RouteComponentProps {
+  isAuthenticated: boolean;
+  setAuth: () => void;
+}
+
+const SignUp = (props: signinProps) => {
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const signupHandler = async (values: signupForm) => {
+    const { firstName, lastName, email, password, confirmPassword } = values;
+    const res = await signup(
+      firstName,
+      lastName,
+      email,
+      password,
+      confirmPassword
+    );
+    if (res.statusCode === 200) {
+      props.setAuth();
+      props.history.push("/");
+    } else {
+      setErrorMsg(res.message);
+    }
+  };
+  const initialValues = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  };
+
   return (
-    <CardPrompt title="Sign Up">
-      <Form>
-        <Form.Group>
-          <Form.Label>First name</Form.Label>
-          <Form.Control type="text" placeholder="John" />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Last name</Form.Label>
-          <Form.Control type="text" placeholder="Doe" />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="johndoe@mail.ca" />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Shh..." />
-          <Form.Text className="text-muted">
-            Must be 8-20 characters, contain a lowercase and uppercase, a number
-            and a special character
-          </Form.Text>
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Confirm Password</Form.Label>
-          <Form.Control type="password" placeholder="Shhh..." />
-        </Form.Group>
-        <Button variant="info" style={{ width: "100%" }}>
-          Sign Up
-        </Button>
-      </Form>
+    <CardPrompt title="Login">
+      <Formik
+        initialValues={initialValues}
+        validationSchema={userSignupSchema}
+        onSubmit={(values) => signupHandler(values)}
+      >
+        {({ errors, touched, isValid }) => (
+          <Form>
+            <Field
+              label="First name"
+              name="firstName"
+              placeholder="John"
+              type="text"
+              errors={errors.firstName}
+              touched={touched.firstName}
+              component={CustomInput}
+            ></Field>
+            <Field
+              label="Last name"
+              name="lastName"
+              placeholder="Doe"
+              type="text"
+              errors={errors.lastName}
+              touched={touched.lastName}
+              component={CustomInput}
+            ></Field>
+            <Field
+              label="Email"
+              name="email"
+              placeholder="johndoe@email.ca"
+              type="text"
+              errors={errors.email}
+              touched={touched.email}
+              component={CustomInput}
+            ></Field>
+            <Field
+              label="Password"
+              name="password"
+              placeholder="Shh..."
+              type="password"
+              errors={errors.password}
+              touched={touched.password}
+              component={CustomInput}
+            ></Field>
+            <Field
+              label="Confirm Password"
+              name="confirmPassword"
+              placeholder="Shhh...."
+              type="password"
+              errors={errors.confirmPassword}
+              touched={touched.confirmPassword}
+              component={CustomInput}
+            ></Field>
+            {!!errorMsg && (
+              <FormText className={classes.invalid}>{errorMsg}</FormText>
+            )}
+            <Button
+              disabled={!isValid}
+              type="submit"
+              variant="info"
+              style={{ width: "100%" }}
+            >
+              Login
+            </Button>
+          </Form>
+        )}
+      </Formik>
     </CardPrompt>
   );
 };

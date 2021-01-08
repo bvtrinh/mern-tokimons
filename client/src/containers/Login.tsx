@@ -26,8 +26,6 @@ const Login = (props: LoginProps) => {
     const { email, password } = values;
     const res = await login(email, password);
     if (res.statusCode === 200) {
-      // console.log(`Email: ${email}`);
-      // console.log(`Password: ${password}`);
       props.setAuth();
       props.history.push("/");
     } else {
