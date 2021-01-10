@@ -14,13 +14,11 @@ export const createUser: RequestHandler = async (req, res) => {
   const { email, firstName, lastName, password } = req.body as UserForm;
 
   try {
-    const hashedPass = await bcrypt.hash(password, SALT_ROUNDS);
-
     const newUser: IUser = new User({
       email,
       firstName,
       lastName,
-      password: hashedPass,
+      password,
       createdOn: new Date(),
     });
 
