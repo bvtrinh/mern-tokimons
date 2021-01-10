@@ -4,9 +4,8 @@
   "description": "An Express REST API to retrieve data from MongoDB",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/index.js",
-    "server": "nodemon dist/index.js",
+    "server": "nodemon",
     "client": "npm start --prefix ../client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
@@ -14,13 +13,14 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.0",
-    "concurrently": "^5.3.0",
     "connect-mongo": "^3.2.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "express-validator": "^6.9.0",
-    "mongoose": "^5.11.9"
+    "mongoose": "^5.11.9",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
@@ -29,7 +29,12 @@
     "@types/express-session": "^1.17.3",
     "@types/mongoose": "^5.10.3",
     "@types/node": "^14.14.19",
+    "@types/passport": "^1.0.5",
+    "@types/passport-local": "^1.0.33",
+    "concurrently": "^5.3.0",
     "dotenv": "^8.2.0",
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.6",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3"
   }
 }
