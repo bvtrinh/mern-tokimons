@@ -1,8 +1,9 @@
-import { RequestHandler } from "express";
+import passport from "passport";
+import { Request, Response, NextFunction, RequestHandler } from "express";
 import { validationResult } from "express-validator";
 import User, { IUser, UserForm, LoginForm } from "../models/User.model";
-import bcrypt from "bcrypt";
-import { SALT_ROUNDS } from "../config/constants";
+import { loginStrategy } from "../auth/local";
+passport.use("login", loginStrategy);
 
 export const createUser: RequestHandler = async (req, res) => {
   const errors = validationResult(req);
@@ -36,37 +37,35 @@ export const createUser: RequestHandler = async (req, res) => {
   }
 };
 
-export const loginUser: RequestHandler = async (req, res) => {
-  const errors = validationResult(req);
+export const loginUser = (req: Request, res: Response, next: NextFunction) => {
+  passport.authenticate(
+    "login",
+    { session: false },
+    async function (err, user, info) {
+      if (err) {
+        return res.status(401);
+      }
+      if (!user) {
+        return res.status(401).json({ error: true, message: info.message });
+      } else {
+        const accessToken = await user.createAccessToken();
+        const refreshToken = await user.createRefreshToken();
 
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
-  const { email, password } = req.body as LoginForm;
-
-  try {
-    const possibleUser = await User.findOne({ email: email });
-
-    if (!possibleUser) throw new Error("Invalid username and/or password");
-
-    const isMatchPass = await bcrypt.compare(
-      password,
-      possibleUser.password as string
-    );
-
-    if (isMatchPass) {
-      return res
-        .status(200)
-        .json({ message: "Login successful", error: false });
-    } else {
-      throw new Error("Invalid username and/or password");
+        return res
+          .cookie("ACCESS-TOKEN", accessToken, {
+            httpOnly: true,
+            sameSite: "lax",
+            maxAge: 15 * 1000 * 60,
+            secure: process.env.NODE_ENV === "production",
+          })
+          .cookie("REFRESH-TOKEN", refreshToken, {
+            httpOnly: true,
+            sameSite: "lax",
+            maxAge: 1000 * 60 * 60 * 24,
+            secure: process.env.NODE_ENV === "production",
+          })
+          .sendStatus(200);
+      }
     }
-  } catch (err) {
-    return res.status(400).json({
-      payload: err,
-      message: err.message,
-      error: true,
-    });
-  }
+  )(req, res);
 };
