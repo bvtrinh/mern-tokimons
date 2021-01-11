@@ -1,10 +1,4 @@
-import express, {
-  Request,
-  Response,
-  NextFunction,
-  json,
-  urlencoded,
-} from "express";
+import express, { json, urlencoded } from "express";
 import session from "express-session";
 import { resolve } from "path";
 import { config } from "dotenv";
@@ -12,6 +6,7 @@ import { join } from "path";
 import { connect } from "./models/db";
 import cors from "cors";
 import connectMongo from "connect-mongo";
+import cookieParser from "cookie-parser";
 import Mongoose from "mongoose";
 import Routes from "./routes";
 const MongoStore = connectMongo(session);
@@ -22,6 +17,7 @@ const port = process.env.PORT || 5000;
 
 const app = express();
 app.use(json());
+app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
 app.use(urlencoded({ extended: true }));
 app.use(cors());
@@ -47,8 +43,8 @@ app.use(
   })
 );
 
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  res.status(500).json({ message: err.message });
-});
+// app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+//   res.status(500).json({ message: err.message });
+// });
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
