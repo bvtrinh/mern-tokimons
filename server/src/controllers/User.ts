@@ -2,6 +2,10 @@ import passport from "passport";
 import { Request, Response, NextFunction, RequestHandler } from "express";
 import { validationResult } from "express-validator";
 import User, { IUser, UserForm, LoginForm } from "../models/User.model";
+import {
+  ACCESS_COOKIE_EXPIRY_TIME,
+  REFRESH_COOKIE_EXPIRY_TIME,
+} from "../config/constants";
 import { loginStrategy } from "../auth/local";
 passport.use("login", loginStrategy);
 
@@ -55,13 +59,13 @@ export const loginUser = (req: Request, res: Response, next: NextFunction) => {
           .cookie("ACCESS-TOKEN", accessToken, {
             httpOnly: true,
             sameSite: "lax",
-            maxAge: 15 * 1000 * 60,
+            maxAge: ACCESS_COOKIE_EXPIRY_TIME,
             secure: process.env.NODE_ENV === "production",
           })
           .cookie("REFRESH-TOKEN", refreshToken, {
             httpOnly: true,
             sameSite: "lax",
-            maxAge: 1000 * 60 * 60 * 24,
+            maxAge: REFRESH_COOKIE_EXPIRY_TIME,
             secure: process.env.NODE_ENV === "production",
           })
           .sendStatus(200);

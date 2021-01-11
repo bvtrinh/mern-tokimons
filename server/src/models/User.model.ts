@@ -3,6 +3,10 @@ import bcrypt from "bcrypt";
 import { SALT_ROUNDS } from "../config/constants";
 import jwt from "jsonwebtoken";
 import Token from "./Token.model";
+import {
+  JWT_ACCESS_EXPIRY_TIME,
+  JWT_REFRESH_EXPIRY_TIME,
+} from "../config/constants";
 export interface IUser extends Document {
   email: string;
   firstName: string;
@@ -42,7 +46,7 @@ UserSchema.methods = {
         { _id, email },
         process.env.ACCESS_TOKEN_SECRET as jwt.Secret,
         {
-          expiresIn: "1h",
+          expiresIn: JWT_ACCESS_EXPIRY_TIME,
         }
       );
     } catch (err) {
@@ -57,7 +61,7 @@ UserSchema.methods = {
         { _id, email },
         process.env.REFRESH_TOKEN_SECRET as jwt.Secret,
         {
-          expiresIn: "1d",
+          expiresIn: JWT_REFRESH_EXPIRY_TIME,
         }
       );
 
