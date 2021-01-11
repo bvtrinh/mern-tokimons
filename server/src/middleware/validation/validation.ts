@@ -47,9 +47,11 @@ export const userSignUpValidation = [
     .isLength({ max: MAX_LEN })
     .withMessage("Max length is 128")
     .custom(async (val) => {
-      const user: IUser = await User.find({ email: val });
+      const user: IUser = await User.findOne({ email: val });
 
-      if (user) throw new Error("Email already in use");
+      if (user) {
+        throw new Error("Email already in use");
+      }
     }),
   body("firstName", "Invalid first name")
     .exists()
