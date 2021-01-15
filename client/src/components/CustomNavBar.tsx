@@ -10,22 +10,22 @@ import { FaUser } from "react-icons/fa";
 import classes from "./CustomNavBar.module.css";
 
 interface Props {
-  logout: () => void;
-  loggedIn: boolean;
+  isAuth: boolean;
   openCreateModal: () => void;
+  logout: () => void;
 }
 
 const CustomNavBar: React.FC<Props> = (props) => {
-  const create = props.loggedIn ? (
+  const create = props.isAuth ? (
     <Nav.Link onClick={props.openCreateModal}>
       <VscDiffAdded /> Create
     </Nav.Link>
   ) : null;
 
-  const auth = props.loggedIn ? (
+  const auth = props.isAuth ? (
     <Nav>
       <Nav.Link>
-        <FaUser /> Hello User!
+        <FaUser /> Hello {localStorage.getItem("firstName")}!
       </Nav.Link>
       <Nav.Link onClick={props.logout}>
         <IoLogOutOutline /> Logout
@@ -41,6 +41,7 @@ const CustomNavBar: React.FC<Props> = (props) => {
       </Nav.Link>
     </Nav>
   );
+
   return (
     <div className={classes.bgColor}>
       <Container>

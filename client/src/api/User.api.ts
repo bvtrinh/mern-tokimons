@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ResponseFormat } from "../models/Response";
+import { setAuth, clearAuth } from "../utils/auth";
 
 export const login = async (
   email: string,
@@ -7,6 +8,9 @@ export const login = async (
 ): Promise<ResponseFormat> => {
   try {
     const res = await axios.post("/u/login", { email, password });
+    const { expiryTime, firstName } = res.data;
+
+    setAuth(expiryTime, firstName);
     return { ...res.data, statusCode: res.status };
   } catch (err) {
     console.log(err.response);
@@ -29,6 +33,17 @@ export const signup = async (
       password,
       confirmPassword,
     });
+    return { ...res.data, statusCode: res.status };
+  } catch (err) {
+    console.log(err.response);
+    return { ...err.response.data, statusCode: err.response.status };
+  }
+};
+
+export const logout = async (): Promise<ResponseFormat> => {
+  try {
+    const res = await axios.get("/u/logout");
+    clearAuth();
     return { ...res.data, statusCode: res.status };
   } catch (err) {
     console.log(err.response);

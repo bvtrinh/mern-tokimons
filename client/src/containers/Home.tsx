@@ -9,12 +9,11 @@ import { FcSearch } from "react-icons/fc";
 import TokiList from "../components/TokiList";
 import { Tokimon } from "../models/Tokimon";
 import { getAllTokis } from "../api/Tokimon.api";
+import { checkAuth } from "../utils/auth";
 
 import classes from "./Home.module.css";
 
-interface Props {
-  loggedIn: boolean;
-}
+interface Props {}
 
 interface StateTypes {
   tokimons: Tokimon[];
@@ -32,14 +31,16 @@ class Home extends Component<Props, StateTypes> {
   };
 
   async componentDidMount() {
-    const res = await getAllTokis();
+    if (checkAuth()) {
+      const res = await getAllTokis();
 
-    const tokimons = res?.payload as Tokimon[];
-    this.setState({
-      tokimons: tokimons,
-      error: res.error,
-      message: res.message,
-    });
+      const tokimons = res?.payload as Tokimon[];
+      this.setState({
+        tokimons: tokimons,
+        error: res.error,
+        message: res.message,
+      });
+    }
   }
 
   searchHandler = (e: any) => {
@@ -54,6 +55,7 @@ class Home extends Component<Props, StateTypes> {
   };
 
   render() {
+    const isAuth = checkAuth();
     const filteredTokis = this.state.tokimons ? this.searchResults() : [];
     const tokis =
       filteredTokis.length > 0 ? (
@@ -61,7 +63,7 @@ class Home extends Component<Props, StateTypes> {
       ) : (
         <h2 style={{ textAlign: "center" }}>No Tokimons Found!</h2>
       );
-    const search = this.props.loggedIn ? (
+    const search = isAuth ? (
       <InputGroup className="mb-3">
         <FormControl
           type="text"
@@ -84,7 +86,7 @@ class Home extends Component<Props, StateTypes> {
           <h3>Welcome to the world of Tokimons!</h3>
         </Jumbotron>
         {search}
-        {this.props.loggedIn ? tokis : null}
+        {isAuth ? tokis : null}
       </Container>
     );
   }

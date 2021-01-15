@@ -1,22 +1,25 @@
 import React, { Component } from "react";
-import CustomNavBar from "./components/CustomNavBar";
+import { Redirect, Route, Switch } from "react-router-dom";
 import Home from "./containers/Home";
 import SignUp from "./containers/SignUp";
 import Login from "./containers/Login";
-import classes from "./App.module.css";
-import { Route, Switch } from "react-router-dom";
+import CustomNavBar from "./components/CustomNavBar";
 import TokiModal from "./components/TokiModal";
 import TokiInfo from "./components/TokiInfo";
 import TokiForm from "./components/Forms/TokiForm";
-import Alert from "react-bootstrap/Alert";
-import Container from "react-bootstrap/Container";
+import PrivateRoute from "./components/PrivateRoute";
+import { logout } from "./api/User.api";
 import { ResponseFormat } from "./models/Response";
 import { TokimonFormValues, FullTokimon } from "./models/Tokimon";
 import { createToki } from "./api/Tokimon.api";
+import Alert from "react-bootstrap/Alert";
+import Container from "react-bootstrap/Container";
+import classes from "./App.module.css";
+import { checkAuth } from "./utils/auth";
 
 interface StateTypes {
+  isAuth: boolean;
   isCreateModalOpen: boolean;
-  loggedIn: boolean;
   error: boolean;
   message: string;
   submitted: boolean;
@@ -25,11 +28,15 @@ interface Props {}
 
 class App extends Component<Props, StateTypes> {
   state = {
+    isAuth: checkAuth(),
     isCreateModalOpen: false,
-    loggedIn: false,
     error: false,
     message: "",
     submitted: false,
+  };
+
+  toggleAuthHandler = () => {
+    this.setState((prevState: StateTypes) => ({ isAuth: !prevState.isAuth }));
   };
 
   toggleCreateModalHandler = () => {
@@ -38,12 +45,13 @@ class App extends Component<Props, StateTypes> {
     });
   };
 
-  loginHandler = () => {
-    this.setState({ loggedIn: true });
-  };
+  logoutHandler = async () => {
+    const res = await logout();
+    this.responseHandler(res);
 
-  logoutHandler = () => {
-    this.setState({ loggedIn: false });
+    if (res.statusCode === 200) {
+      return <Redirect to="/login" />;
+    }
   };
 
   createSubmitHandler = async (values: TokimonFormValues) => {
@@ -73,7 +81,7 @@ class App extends Component<Props, StateTypes> {
 
   responseHandler = (res: ResponseFormat) => {
     if (res.statusCode === 200) {
-      this.setState({ submitted: true, error: false });
+      this.setState({ submitted: true, error: false, message: res.message });
     } else {
       this.setState({
         submitted: true,
@@ -100,7 +108,7 @@ class App extends Component<Props, StateTypes> {
     return (
       <div className={classes.App}>
         <CustomNavBar
-          loggedIn={this.state.loggedIn}
+          isAuth={this.state.isAuth}
           logout={this.logoutHandler}
           openCreateModal={this.toggleCreateModalHandler}
         />
@@ -117,22 +125,18 @@ class App extends Component<Props, StateTypes> {
         </TokiModal>
         <Switch>
           <Route
-            path="/"
-            exact
-            component={() => <Home loggedIn={this.state.loggedIn} />}
-          />
-          <Route path="/t/:id" component={TokiInfo} />
-          <Route path="/u/signup" component={SignUp} />
-          <Route
             path="/u/login"
             render={(props) => (
-              <Login
-                {...props}
-                setAuth={this.loginHandler}
-                isAuthenticated={this.state.loggedIn}
-              />
+              <Login setStateAuth={this.toggleAuthHandler} {...props} />
             )}
           />
+          <Route path="/u/signup" component={SignUp} />
+          <PrivateRoute>
+            <Switch>
+              <Route path="/t/:id" component={TokiInfo} />
+              <Route exact path="/" component={Home} />
+            </Switch>
+          </PrivateRoute>
         </Switch>
       </div>
     );

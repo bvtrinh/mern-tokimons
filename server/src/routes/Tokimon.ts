@@ -6,14 +6,15 @@ import {
   updateToki,
   deleteToki,
 } from "../controllers/Tokimon";
-import { tokiValidation } from "../middleware/validation/validation";
+import { tokiValidation } from "../middleware/validation";
+import { verifyToken } from "../auth/jwt";
 
 const router = Router();
 
-router.post("/", tokiValidation, createToki);
-router.get("/", getAllToki);
-router.get("/:id", getOneToki);
-router.patch("/:id", tokiValidation, updateToki);
-router.delete("/:id", deleteToki);
+router.post("/", verifyToken, tokiValidation, createToki);
+router.get("/", verifyToken, getAllToki);
+router.get("/:id", verifyToken, getOneToki);
+router.patch("/:id", verifyToken, tokiValidation, updateToki);
+router.delete("/:id", verifyToken, deleteToki);
 
 export default router;

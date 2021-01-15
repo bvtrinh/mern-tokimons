@@ -1,12 +1,13 @@
 import React, { useState } from "react";
+import { Redirect, RouteComponentProps } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
-import Button from "react-bootstrap/Button";
-import FormText from "react-bootstrap/FormText";
 import CustomInput from "../components/Forms/CustomInput";
 import CardPrompt from "../components/CardPrompt";
 import { userLoginSchema } from "../models/userSchema";
 import { login } from "../api/User.api";
-import { RouteComponentProps } from "react-router-dom";
+import { checkAuth } from "../utils/auth";
+import Button from "react-bootstrap/Button";
+import FormText from "react-bootstrap/FormText";
 import classes from "./Login.module.css";
 
 interface LoginForm {
@@ -14,19 +15,18 @@ interface LoginForm {
   password: string;
 }
 
-interface LoginProps extends RouteComponentProps {
-  isAuthenticated: boolean;
-  setAuth: () => void;
+interface LoginProps {
+  setStateAuth: () => void;
 }
 
-const Login = (props: LoginProps) => {
+const Login = (props: LoginProps & RouteComponentProps) => {
   const [errorMsg, setErrorMsg] = useState("");
 
   const loginHandler = async (values: LoginForm) => {
     const { email, password } = values;
     const res = await login(email, password);
     if (res.statusCode === 200) {
-      props.setAuth();
+      props.setStateAuth();
       props.history.push("/");
     } else {
       setErrorMsg(res.message);
@@ -37,6 +37,8 @@ const Login = (props: LoginProps) => {
     email: "",
     password: "",
   };
+
+  if (checkAuth()) return <Redirect to="/" />;
 
   return (
     <CardPrompt title="Login">

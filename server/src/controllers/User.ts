@@ -2,6 +2,7 @@ import passport from "passport";
 import { Request, Response, NextFunction, RequestHandler } from "express";
 import { validationResult } from "express-validator";
 import User, { IUser, UserForm, LoginForm } from "../models/User.model";
+import Token from "../models/Token.model";
 import {
   ACCESS_COOKIE_EXPIRY_TIME,
   REFRESH_COOKIE_EXPIRY_TIME,
@@ -55,21 +56,44 @@ export const loginUser = (req: Request, res: Response, next: NextFunction) => {
         const accessToken = await user.createAccessToken();
         const refreshToken = await user.createRefreshToken();
 
+        const expiryTime = Date.now() + ACCESS_COOKIE_EXPIRY_TIME;
+
         return res
-          .cookie("ACCESS-TOKEN", accessToken, {
+          .cookie("ACCESS_TOKEN", accessToken, {
             httpOnly: true,
             sameSite: "lax",
             maxAge: ACCESS_COOKIE_EXPIRY_TIME,
             secure: process.env.NODE_ENV === "production",
           })
-          .cookie("REFRESH-TOKEN", refreshToken, {
+          .cookie("REFRESH_TOKEN", refreshToken, {
             httpOnly: true,
             sameSite: "lax",
             maxAge: REFRESH_COOKIE_EXPIRY_TIME,
             secure: process.env.NODE_ENV === "production",
           })
-          .sendStatus(200);
+          .status(200)
+          .json({ expiryTime: expiryTime, firstName: user.firstName });
       }
     }
   )(req, res);
+};
+
+export const logoutUser: RequestHandler = async (req, res) => {
+  try {
+    const rToken = req.cookies["REFRESH_TOKEN"];
+    res.clearCookie("ACCESS_TOKEN");
+    res.clearCookie("REFRESH_TOKEN");
+    await Token.deleteOne({ token: rToken });
+    return res.status(200).json({
+      message: "Successful logout",
+      error: false,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      payload: err,
+      message: err.message,
+      error: true,
+    });
+  }
 };

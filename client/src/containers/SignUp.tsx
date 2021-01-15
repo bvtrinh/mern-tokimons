@@ -6,8 +6,9 @@ import FormText from "react-bootstrap/FormText";
 import CustomInput from "../components/Forms/CustomInput";
 import { userSignupSchema } from "../models/userSchema";
 import { signup } from "../api/User.api";
-import { RouteComponentProps } from "react-router-dom";
+import { Redirect, RouteComponentProps } from "react-router-dom";
 import classes from "./Login.module.css";
+import { checkAuth } from "../utils/auth";
 
 interface signupForm {
   firstName: string;
@@ -49,8 +50,10 @@ const SignUp = (props: signinProps) => {
     confirmPassword: "",
   };
 
+  if (checkAuth()) return <Redirect to="/" />;
+
   return (
-    <CardPrompt title="Login">
+    <CardPrompt title="Sign Up">
       <Formik
         initialValues={initialValues}
         validationSchema={userSignupSchema}
