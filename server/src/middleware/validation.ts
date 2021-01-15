@@ -1,5 +1,5 @@
 import { body } from "express-validator";
-import User, { IUser } from "../../models/User.model";
+import User, { IUser } from "../models/User.model";
 import {
   MIN_LEN,
   MIN_LEN_PASS,
@@ -7,7 +7,7 @@ import {
   MAX_LEN,
   MAX_LEN_PASS,
   MAX_LEVEL,
-} from "../../config/constants";
+} from "../config/constants";
 
 export const tokiValidation = [
   body("name", "Invalid name")

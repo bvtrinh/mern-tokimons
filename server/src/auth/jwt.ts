@@ -20,7 +20,7 @@ export const verifyToken = async (
   next: NextFunction
 ) => {
   try {
-    const accessToken = req.cookies["ACCESS-TOKEN"];
+    const accessToken = req.cookies["ACCESS_TOKEN"];
 
     if (!accessToken) throw new Error("No access token");
 
@@ -42,7 +42,7 @@ export const renewTokens = async (
   next: NextFunction
 ) => {
   try {
-    const refreshToken = req.cookies["REFRESH-TOKEN"];
+    const refreshToken = req.cookies["REFRESH_TOKEN"];
     if (!refreshToken)
       return res
         .status(401)
