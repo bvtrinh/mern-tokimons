@@ -24,9 +24,8 @@ interface StateTypes {
   message: string;
   submitted: boolean;
 }
-interface Props {}
 
-class App extends Component<Props, StateTypes> {
+class App extends Component<{}, StateTypes> {
   state = {
     isAuth: checkAuth(),
     isCreateModalOpen: false,
@@ -34,6 +33,20 @@ class App extends Component<Props, StateTypes> {
     message: "",
     submitted: false,
   };
+
+  componentDidMount() {
+    if (this.state.isAuth) {
+      // Refresh token every 13 minutes
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.state.message) {
+      setTimeout(() => {
+        this.setState({ message: "" });
+      }, 5000);
+    }
+  }
 
   toggleAuthHandler = () => {
     this.setState((prevState: StateTypes) => ({ isAuth: !prevState.isAuth }));
@@ -47,7 +60,8 @@ class App extends Component<Props, StateTypes> {
 
   logoutHandler = async () => {
     const res = await logout();
-    this.responseHandler(res);
+    this.setAlertHandler(res);
+    this.setState({ isAuth: false });
 
     if (res.statusCode === 200) {
       return <Redirect to="/login" />;
@@ -75,33 +89,31 @@ class App extends Component<Props, StateTypes> {
       elements,
     };
     const res = await createToki(toki);
-    this.responseHandler(res);
+    this.setAlertHandler(res);
     this.toggleCreateModalHandler();
   };
 
-  responseHandler = (res: ResponseFormat) => {
-    if (res.statusCode === 200) {
-      this.setState({ submitted: true, error: false, message: res.message });
-    } else {
-      this.setState({
-        submitted: true,
-        error: res.error,
-        message: res.message,
-      });
+  setAlertHandler = (res: ResponseFormat) => {
+    this.setState({
+      submitted: true,
+      error: res.error,
+      message: res.message,
+    });
+    // The user is in a place they shouldn't be
+    if (res.statusCode === 401) {
+      return <Redirect to="/u/login" />;
     }
   };
 
   render() {
-    const alert = this.state.submitted ? (
+    const alert = this.state.message ? (
       <Alert
-        onClose={() => this.setState({ submitted: false })}
+        onClose={() => this.setState({ message: "" })}
         dismissible
         className="mt-3"
         variant={this.state.error ? "danger" : "success"}
       >
-        {this.state.error
-          ? `Creation Error: ${this.state.message}`
-          : this.state.message}
+        {this.state.error ? `Error: ${this.state.message}` : this.state.message}
       </Alert>
     ) : null;
 
@@ -127,13 +139,31 @@ class App extends Component<Props, StateTypes> {
           <Route
             path="/u/login"
             render={(props) => (
-              <Login setStateAuth={this.toggleAuthHandler} {...props} />
+              <Login
+                setAlertHandler={this.setAlertHandler}
+                setStateAuth={this.toggleAuthHandler}
+                {...props}
+              />
             )}
           />
-          <Route path="/u/signup" component={SignUp} />
+          <Route
+            path="/u/signup"
+            render={(props) => (
+              <SignUp
+                setAlertHandler={this.setAlertHandler}
+                setStateAuth={this.toggleAuthHandler}
+                {...props}
+              />
+            )}
+          />
           <PrivateRoute>
             <Switch>
-              <Route path="/t/:id" component={TokiInfo} />
+              <Route
+                path="/t/:id"
+                render={(props) => (
+                  <TokiInfo setAlertHandler={this.setAlertHandler} {...props} />
+                )}
+              />
               <Route exact path="/" component={Home} />
             </Switch>
           </PrivateRoute>

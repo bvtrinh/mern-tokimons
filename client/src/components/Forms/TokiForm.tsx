@@ -158,7 +158,7 @@ const TokiForm: React.FC<Props> = (props) => {
               Cancel
             </Button>
             <Button type="submit" variant="primary">
-              Create
+              Confirm
             </Button>
           </div>
         </Form>

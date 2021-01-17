@@ -4,7 +4,6 @@ import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Alert from "react-bootstrap/Alert";
 import classes from "./TokiInfo.module.css";
 import { getOneToki, updateToki, deleteToki } from "../api/Tokimon.api";
 import { TokimonFormValues, FullTokimon, TokimonInfo } from "../models/Tokimon";
@@ -17,6 +16,9 @@ import TokiModal from "./TokiModal";
 import TokiForm from "./Forms/TokiForm";
 import ConfirmDelete from "./ConfirmDelete";
 
+interface TokiInfoProps {
+  setAlertHandler: (res: ResponseFormat) => void;
+}
 interface IReactRouterParams {
   id: string;
 }
@@ -31,7 +33,7 @@ interface State extends TokimonInfo {
 }
 
 class TokiInfo extends Component<
-  RouteComponentProps<IReactRouterParams>,
+  TokiInfoProps & RouteComponentProps<IReactRouterParams>,
   State
 > {
   state = {
@@ -83,17 +85,6 @@ class TokiInfo extends Component<
     this.setState({ isDeleteConfirmOpen: !this.state.isDeleteConfirmOpen });
   };
 
-  apiReponse = (res: ResponseFormat) => {
-    if (res.statusCode === 200) {
-      this.setState({ error: false, responseMessage: res.message });
-    } else {
-      this.setState({
-        error: true,
-        responseMessage: res.message,
-      });
-    }
-  };
-
   updateSubmitHandler = async (values: TokimonFormValues) => {
     // Format data for API call
     const {
@@ -117,7 +108,8 @@ class TokiInfo extends Component<
     };
 
     const res = await updateToki(toki);
-    this.apiReponse(res);
+    this.props.setAlertHandler(res);
+
     this.setState({
       name,
       height,
@@ -132,15 +124,10 @@ class TokiInfo extends Component<
 
   deleteSubmitHandler = async () => {
     const res = await deleteToki(this.state._id);
+    this.props.setAlertHandler(res);
     if (res.statusCode === 200) {
       this.props.history.push("/");
     } else {
-      console.log(res);
-      this.setState({
-        error: true,
-        responseMessage: "Server side error",
-        submitted: true,
-      });
       this.toggleDeleteConfirmHandler();
     }
   };
@@ -163,22 +150,8 @@ class TokiInfo extends Component<
       water,
     };
 
-    const alert = this.state.submitted ? (
-      <Alert
-        onClose={() => this.setState({ submitted: false })}
-        dismissible
-        className="mt-3"
-        variant={this.state.error ? "danger" : "success"}
-      >
-        {this.state.error
-          ? `Error: ${this.state.responseMessage}`
-          : this.state.responseMessage}
-      </Alert>
-    ) : null;
-
     const content = this.state.loaded ? (
       <React.Fragment>
-        {alert}
         <TokiModal
           show={this.state.isUpdateModalOpen}
           onHide={this.toggleUpdateModalHandler}
