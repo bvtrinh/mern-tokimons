@@ -1,4 +1,8 @@
 import React, { Component } from "react";
+import TokiList from "../UI/TokiList";
+import { getAllTokis } from "../../api/tokimon";
+import { Tokimon } from "../../models/tokimon";
+import { checkAuth } from "../../utils/auth";
 import Container from "react-bootstrap/Container";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Image from "react-bootstrap/Image";
@@ -6,14 +10,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 import FormControl from "react-bootstrap/FormControl";
 import { FcSearch } from "react-icons/fc";
-import TokiList from "../components/TokiList";
-import { Tokimon } from "../models/Tokimon";
-import { getAllTokis } from "../api/Tokimon.api";
-import { checkAuth } from "../utils/auth";
-
-import classes from "./Home.module.css";
-
-interface Props {}
+import classes from "../../css/Home.module.css";
 
 interface StateTypes {
   tokimons: Tokimon[];
@@ -22,7 +19,7 @@ interface StateTypes {
   message: string;
 }
 
-class Home extends Component<Props, StateTypes> {
+class Home extends Component<{}, StateTypes> {
   state = {
     tokimons: [] as Tokimon[],
     searchStr: "",
@@ -34,7 +31,7 @@ class Home extends Component<Props, StateTypes> {
     if (checkAuth()) {
       const res = await getAllTokis();
 
-      const tokimons = res?.payload as Tokimon[];
+      const tokimons = res.payload as Tokimon[];
       this.setState({
         tokimons: tokimons,
         error: res.error,
@@ -43,6 +40,7 @@ class Home extends Component<Props, StateTypes> {
     }
   }
 
+  // TODO: this shouldn't be type any
   searchHandler = (e: any) => {
     this.setState({ searchStr: e.target.value });
   };

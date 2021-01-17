@@ -1,22 +1,26 @@
 import React, { Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
+import { Bar } from "@reactchartjs/react-chart.js";
+import TokiModal from "../UI/TokiModal";
+import TokiForm from "../forms/TokiForm";
+import ConfirmDelete from "../forms/ConfirmDelete";
+import { getOneToki, updateToki, deleteToki } from "../../api/tokimon";
+import { ChartSettings, options } from "../../config/chartSettings";
+import {
+  TokimonFormValues,
+  FullTokimon,
+  TokimonInfo,
+} from "../../models/tokimon";
+import { ResponseFormat } from "../../models/response";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import classes from "./TokiInfo.module.css";
-import { getOneToki, updateToki, deleteToki } from "../api/Tokimon.api";
-import { TokimonFormValues, FullTokimon, TokimonInfo } from "../models/Tokimon";
-import { ResponseFormat } from "../models/Response";
-import { Bar } from "@reactchartjs/react-chart.js";
-import { ChartSettings, options } from "../config/ChartSettings";
 import { FaEdit } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
-import TokiModal from "./TokiModal";
-import TokiForm from "./Forms/TokiForm";
-import ConfirmDelete from "./ConfirmDelete";
+import classes from "../../css/TokiInfo.module.css";
 
-interface TokiInfoProps {
+interface TokiInfoProps extends RouteComponentProps<IReactRouterParams> {
   setAlertHandler: (res: ResponseFormat) => void;
 }
 interface IReactRouterParams {
@@ -32,10 +36,7 @@ interface State extends TokimonInfo {
   responseMessage: string;
 }
 
-class TokiInfo extends Component<
-  TokiInfoProps & RouteComponentProps<IReactRouterParams>,
-  State
-> {
+class TokiInfo extends Component<TokiInfoProps, State> {
   state = {
     _id: "",
     name: "",
@@ -86,7 +87,6 @@ class TokiInfo extends Component<
   };
 
   updateSubmitHandler = async (values: TokimonFormValues) => {
-    // Format data for API call
     const {
       name,
       height,

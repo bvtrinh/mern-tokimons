@@ -1,10 +1,10 @@
 import * as yup from "yup";
-
-const MIN_LEN = 2;
-const MAX_LEN = 32;
-
-const MIN_PASS_LEN = 6;
-const MAX_PASS_LEN = 32;
+import {
+  MIN_LEN,
+  MAX_LEN,
+  MIN_PASS_LEN,
+  MAX_PASS_LEN,
+} from "../config/constants";
 
 export const userLoginSchema = yup.object().shape({
   email: yup.string().email("Must be a valid email").required("Required"),

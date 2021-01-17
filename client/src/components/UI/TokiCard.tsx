@@ -1,9 +1,9 @@
 import React from "react";
-import { Tokimon } from "../models/Tokimon";
 import { NavLink } from "react-router-dom";
+import { Tokimon } from "../../models/tokimon";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
-import classes from "./TokiCard.module.css";
+import classes from "../../css/TokiCard.module.css";
 
 const TokiCard: React.FC<Tokimon & { key: string }> = (props) => {
   return (

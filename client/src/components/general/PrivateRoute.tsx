@@ -1,6 +1,6 @@
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
-import { checkAuth } from "../utils/auth";
+import { checkAuth } from "../../utils/auth";
 
 interface PrivateRouteProps {
   component?: React.FC | React.ComponentClass;
@@ -8,6 +8,7 @@ interface PrivateRouteProps {
   exact?: boolean;
 }
 
+// https://github.com/rootsher/react-typescript-starter/blob/master/src/app/core/components/protected-route/protected-route.template.tsx
 const PrivateRoute = ({
   children,
   component: Component,

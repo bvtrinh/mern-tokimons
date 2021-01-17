@@ -1,12 +1,13 @@
 import React from "react";
 import { Redirect, RouteComponentProps } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
-import CustomInput from "../components/Forms/CustomInput";
-import CardPrompt from "../components/CardPrompt";
-import { ResponseFormat } from "../models/Response";
-import { userLoginSchema } from "../models/userSchema";
-import { login } from "../api/User.api";
-import { checkAuth } from "../utils/auth";
+import CardPrompt from "../UI/CardPrompt";
+import CustomInput from "../forms/CustomInput";
+import { login } from "../../api/user";
+import { LOGIN_INITIAL_VALUES } from "../../config/constants";
+import { ResponseFormat } from "../../models/response";
+import { checkAuth } from "../../utils/auth";
+import { userLoginSchema } from "../../validation/userSchema";
 import Button from "react-bootstrap/Button";
 
 interface LoginForm {
@@ -30,17 +31,12 @@ const Login = (props: LoginProps & RouteComponentProps) => {
     }
   };
 
-  const initialValues = {
-    email: "",
-    password: "",
-  };
-
   if (checkAuth()) return <Redirect to="/" />;
 
   return (
     <CardPrompt title="Login">
       <Formik
-        initialValues={initialValues}
+        initialValues={LOGIN_INITIAL_VALUES}
         validationSchema={userLoginSchema}
         onSubmit={(values) => loginHandler(values)}
       >

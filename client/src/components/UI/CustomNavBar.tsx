@@ -1,13 +1,13 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image";
-import { NavLink } from "react-router-dom";
 import { VscDiffAdded } from "react-icons/vsc";
 import { IoLogInOutline, IoPersonAdd, IoLogOutOutline } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
-import classes from "./CustomNavBar.module.css";
+import classes from "../../css/CustomNavBar.module.css";
 
 interface Props {
   isAuth: boolean;

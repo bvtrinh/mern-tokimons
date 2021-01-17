@@ -1,7 +1,7 @@
 import React from "react";
 import { FieldProps } from "formik";
 import Form from "react-bootstrap/Form";
-import classes from "./CustomInput.module.css";
+import classes from "../../css/CustomInput.module.css";
 
 interface Props extends FieldProps {
   label: string;

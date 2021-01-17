@@ -1,13 +1,14 @@
 import React from "react";
-import Button from "react-bootstrap/Button";
-import CardPrompt from "../components/CardPrompt";
-import { Formik, Form, Field } from "formik";
-import CustomInput from "../components/Forms/CustomInput";
-import { userSignupSchema } from "../models/userSchema";
-import { signup } from "../api/User.api";
 import { Redirect, RouteComponentProps } from "react-router-dom";
-import { checkAuth } from "../utils/auth";
-import { ResponseFormat } from "../models/Response";
+import { Formik, Form, Field } from "formik";
+import CustomInput from "../forms/CustomInput";
+import CardPrompt from "../UI/CardPrompt";
+import { signup } from "../../api/user";
+import { SIGNUP_INITIAL_VALUES } from "../../config/constants";
+import { ResponseFormat } from "../../models/response";
+import { checkAuth } from "../../utils/auth";
+import { userSignupSchema } from "../../validation/userSchema";
+import Button from "react-bootstrap/Button";
 
 interface signupForm {
   firstName: string;
@@ -21,14 +22,6 @@ interface SignupProps extends RouteComponentProps {
   setStateAuth: () => void;
   setAlertHandler: (res: ResponseFormat) => void;
 }
-
-const INITIAL_VALUES = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  password: "",
-  confirmPassword: "",
-};
 
 const SignUp = (props: SignupProps) => {
   const signupHandler = async (values: signupForm) => {
@@ -52,7 +45,7 @@ const SignUp = (props: SignupProps) => {
   return (
     <CardPrompt title="Sign Up">
       <Formik
-        initialValues={INITIAL_VALUES}
+        initialValues={SIGNUP_INITIAL_VALUES}
         validationSchema={userSignupSchema}
         onSubmit={(values) => signupHandler(values)}
       >

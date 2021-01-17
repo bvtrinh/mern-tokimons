@@ -1,16 +1,16 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
-import TokiSchema from "../../models/TokimonSchema";
 import CustomInput from "./CustomInput";
+import { TokimonFormValues } from "../../models/tokimon";
+import TokiSchema from "../../validation/tokimonSchema";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import classes from "./TokiForm.module.css";
-import { TokimonFormValues } from "../../models/Tokimon";
+import classes from "../../css/TokiForm.module.css";
 
 interface Props {
-  toggleModal: () => void;
   previousValues?: TokimonFormValues;
+  toggleModal: () => void;
   submit: (values: TokimonFormValues) => void;
 }
 

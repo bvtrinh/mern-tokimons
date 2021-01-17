@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ResponseFormat } from "../models/Response";
+import { ResponseFormat } from "../models/response";
 import { setAuth, clearAuth } from "../utils/auth";
 
 export const login = async (
@@ -13,7 +13,6 @@ export const login = async (
 
     return { ...res.data, statusCode: res.status };
   } catch (err) {
-    console.log(err.response);
     return { ...err.response.data, statusCode: err.response.status };
   }
 };
@@ -37,7 +36,6 @@ export const signup = async (
 
     return { ...res.data, statusCode: res.status };
   } catch (err) {
-    console.log(err.response);
     return { ...err.response.data, statusCode: err.response.status };
   }
 };
@@ -48,7 +46,6 @@ export const logout = async (): Promise<ResponseFormat> => {
     clearAuth();
     return { ...res.data, statusCode: res.status };
   } catch (err) {
-    console.log(err.response);
     return { ...err.response.data, statusCode: err.response.status };
   }
 };
@@ -59,7 +56,6 @@ export const refreshTokens = async (): Promise<ResponseFormat> => {
     setAuth(res.data.expiryTime, res.data.firstName);
     return { ...res.data, statusCode: res.status };
   } catch (err) {
-    console.log(err.message);
     if (err.message === "Network Error") {
       return {
         payload: "",

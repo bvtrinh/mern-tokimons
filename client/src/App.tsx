@@ -1,21 +1,21 @@
 import React, { Component } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import Home from "./containers/Home";
-import SignUp from "./containers/SignUp";
-import Login from "./containers/Login";
-import CustomNavBar from "./components/CustomNavBar";
-import TokiModal from "./components/TokiModal";
-import TokiInfo from "./components/TokiInfo";
-import TokiForm from "./components/Forms/TokiForm";
-import PrivateRoute from "./components/PrivateRoute";
-import { logout, refreshTokens } from "./api/User.api";
-import { ResponseFormat } from "./models/Response";
-import { TokimonFormValues, FullTokimon } from "./models/Tokimon";
-import { createToki } from "./api/Tokimon.api";
+import Home from "./components/pages/Home";
+import SignUp from "./components/pages/SignUp";
+import Login from "./components/pages/Login";
+import TokiInfo from "./components/pages/TokiInfo";
+import CustomNavBar from "./components/UI/CustomNavBar";
+import TokiModal from "./components/UI/TokiModal";
+import TokiForm from "./components/forms/TokiForm";
+import PrivateRoute from "./components/general/PrivateRoute";
+import { TokimonFormValues, FullTokimon } from "./models/tokimon";
+import { ResponseFormat } from "./models/response";
+import { logout, refreshTokens } from "./api/user";
+import { createToki } from "./api/tokimon";
+import { checkAuth } from "./utils/auth";
+import { REFRESH_TIME } from "./config/constants";
 import Alert from "react-bootstrap/Alert";
 import Container from "react-bootstrap/Container";
-import classes from "./App.module.css";
-import { checkAuth } from "./utils/auth";
 
 interface StateTypes {
   isAuth: boolean;
@@ -24,9 +24,6 @@ interface StateTypes {
   message: string;
   submitted: boolean;
 }
-
-// Get refresh token every 13m
-const REFRESH_TIME = 1000 * 60 * 13;
 
 class App extends Component<{}, StateTypes> {
   state = {
@@ -69,9 +66,9 @@ class App extends Component<{}, StateTypes> {
   };
 
   toggleCreateModalHandler = () => {
-    this.setState({
-      isCreateModalOpen: !this.state.isCreateModalOpen,
-    });
+    this.setState((prevState: StateTypes) => ({
+      isCreateModalOpen: !prevState.isCreateModalOpen,
+    }));
   };
 
   logoutHandler = async () => {
@@ -86,7 +83,6 @@ class App extends Component<{}, StateTypes> {
   };
 
   createSubmitHandler = async (values: TokimonFormValues) => {
-    // Format data for API call
     const {
       name,
       height,
@@ -116,7 +112,6 @@ class App extends Component<{}, StateTypes> {
       error: res.error,
       message: res.message,
     });
-    // The user is in a place they shouldn't be
     if (res.statusCode === 401) {
       return <Redirect to="/u/login" />;
     }
@@ -135,7 +130,7 @@ class App extends Component<{}, StateTypes> {
     ) : null;
 
     return (
-      <div className={classes.App}>
+      <React.Fragment>
         <CustomNavBar
           isAuth={this.state.isAuth}
           logout={this.logoutHandler}
@@ -185,7 +180,7 @@ class App extends Component<{}, StateTypes> {
             </Switch>
           </PrivateRoute>
         </Switch>
-      </div>
+      </React.Fragment>
     );
   }
 }

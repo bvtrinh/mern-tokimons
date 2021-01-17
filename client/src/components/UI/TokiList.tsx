@@ -1,8 +1,8 @@
 import React from "react";
 import TokiCard from "./TokiCard";
-import { Tokimon } from "../models/Tokimon";
+import { Tokimon } from "../../models/tokimon";
 import Row from "react-bootstrap/Row";
-import classes from "./TokiList.module.css";
+import classes from "../../css/TokiList.module.css";
 
 interface Props {
   tokimons: Tokimon[];

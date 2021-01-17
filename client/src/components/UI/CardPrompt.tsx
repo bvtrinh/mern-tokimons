@@ -1,7 +1,7 @@
 import React from "react";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
-import classes from "./Card.module.css";
+import classes from "../../css/CardPrompt.module.css";
 
 interface Props {
   title: string;
