@@ -8,7 +8,7 @@ import TokiModal from "./components/TokiModal";
 import TokiInfo from "./components/TokiInfo";
 import TokiForm from "./components/Forms/TokiForm";
 import PrivateRoute from "./components/PrivateRoute";
-import { logout } from "./api/User.api";
+import { logout, refreshTokens } from "./api/User.api";
 import { ResponseFormat } from "./models/Response";
 import { TokimonFormValues, FullTokimon } from "./models/Tokimon";
 import { createToki } from "./api/Tokimon.api";
@@ -25,6 +25,9 @@ interface StateTypes {
   submitted: boolean;
 }
 
+// Get refresh token every 13m
+const REFRESH_TIME = 1000 * 60 * 13;
+
 class App extends Component<{}, StateTypes> {
   state = {
     isAuth: checkAuth(),
@@ -34,10 +37,23 @@ class App extends Component<{}, StateTypes> {
     submitted: false,
   };
 
+  private timer: any;
+
   componentDidMount() {
     if (this.state.isAuth) {
-      // Refresh token every 13 minutes
+      this.timer = setInterval(async () => {
+        const res = await refreshTokens();
+
+        if (res.statusCode === 503) {
+          clearInterval(this.timer);
+          this.setAlertHandler(res);
+        }
+      }, REFRESH_TIME);
     }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
   }
 
   componentDidUpdate() {
@@ -62,6 +78,7 @@ class App extends Component<{}, StateTypes> {
     const res = await logout();
     this.setAlertHandler(res);
     this.setState({ isAuth: false });
+    clearInterval(this.timer);
 
     if (res.statusCode === 200) {
       return <Redirect to="/login" />;

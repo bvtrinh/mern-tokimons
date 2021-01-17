@@ -52,3 +52,22 @@ export const logout = async (): Promise<ResponseFormat> => {
     return { ...err.response.data, statusCode: err.response.status };
   }
 };
+
+export const refreshTokens = async (): Promise<ResponseFormat> => {
+  try {
+    const res = await axios.get("/u/refresh");
+    setAuth(res.data.expiryTime, res.data.firstName);
+    return { ...res.data, statusCode: res.status };
+  } catch (err) {
+    console.log(err.message);
+    if (err.message === "Network Error") {
+      return {
+        payload: "",
+        message: err.message,
+        error: true,
+        statusCode: 503,
+      };
+    }
+    return { ...err.response.data, statusCode: err.response.status };
+  }
+};

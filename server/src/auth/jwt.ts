@@ -64,26 +64,32 @@ export const renewTokens = async (
 
     await Token.deleteOne({ token: refreshTokenDB.token });
 
-    // This will save the refresh token in the DB
-    const newAccessToken = await user.createAccessToken();
-    const newRefreshToken = await user.createRefreshToken();
-
     return res
-      .cookie("ACCESS-TOKEN", newAccessToken, {
+      .cookie("ACCESS_TOKEN", await user.createAccessToken(), {
         httpOnly: true,
         sameSite: "lax",
         maxAge: ACCESS_COOKIE_EXPIRY_TIME,
         secure: process.env.NODE_ENV === "production",
       })
-      .cookie("REFRESH-TOKEN", newRefreshToken, {
+      .cookie("REFRESH_TOKEN", await user.createRefreshToken(), {
         httpOnly: true,
         sameSite: "lax",
         maxAge: REFRESH_COOKIE_EXPIRY_TIME,
         secure: process.env.NODE_ENV === "production",
       })
-      .sendStatus(200);
+      .status(200)
+      .json({
+        expiryTime: Date.now() + ACCESS_COOKIE_EXPIRY_TIME,
+        firstName: user.firstName,
+        message: "Successful refreshing tokens",
+        error: false,
+      });
   } catch (err) {
     console.error(err);
-    return res.status(401);
+    return res.status(500).json({
+      payload: err,
+      message: "Error refreshing tokens",
+      error: true,
+    });
   }
 };
