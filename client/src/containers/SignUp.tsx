@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import Button from "react-bootstrap/Button";
 import CardPrompt from "../components/CardPrompt";
 import { Formik, Form, Field } from "formik";
-import FormText from "react-bootstrap/FormText";
 import CustomInput from "../components/Forms/CustomInput";
 import { userSignupSchema } from "../models/userSchema";
 import { signup } from "../api/User.api";
 import { Redirect, RouteComponentProps } from "react-router-dom";
-import classes from "./Login.module.css";
 import { checkAuth } from "../utils/auth";
+import { ResponseFormat } from "../models/Response";
 
 interface signupForm {
   firstName: string;
@@ -18,14 +17,20 @@ interface signupForm {
   confirmPassword: string;
 }
 
-interface signinProps extends RouteComponentProps {
-  isAuthenticated: boolean;
-  setAuth: () => void;
+interface SignupProps extends RouteComponentProps {
+  setStateAuth: () => void;
+  setAlertHandler: (res: ResponseFormat) => void;
 }
 
-const SignUp = (props: signinProps) => {
-  const [errorMsg, setErrorMsg] = useState("");
+const INITIAL_VALUES = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
 
+const SignUp = (props: SignupProps) => {
   const signupHandler = async (values: signupForm) => {
     const { firstName, lastName, email, password, confirmPassword } = values;
     const res = await signup(
@@ -35,19 +40,11 @@ const SignUp = (props: signinProps) => {
       password,
       confirmPassword
     );
+    props.setAlertHandler(res);
     if (res.statusCode === 200) {
-      props.setAuth();
+      props.setStateAuth();
       props.history.push("/");
-    } else {
-      setErrorMsg(res.message);
     }
-  };
-  const initialValues = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
   };
 
   if (checkAuth()) return <Redirect to="/" />;
@@ -55,7 +52,7 @@ const SignUp = (props: signinProps) => {
   return (
     <CardPrompt title="Sign Up">
       <Formik
-        initialValues={initialValues}
+        initialValues={INITIAL_VALUES}
         validationSchema={userSignupSchema}
         onSubmit={(values) => signupHandler(values)}
       >
@@ -106,9 +103,6 @@ const SignUp = (props: signinProps) => {
               touched={touched.confirmPassword}
               component={CustomInput}
             ></Field>
-            {!!errorMsg && (
-              <FormText className={classes.invalid}>{errorMsg}</FormText>
-            )}
             <Button
               disabled={!isValid}
               type="submit"

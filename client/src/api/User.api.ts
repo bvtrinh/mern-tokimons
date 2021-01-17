@@ -9,8 +9,8 @@ export const login = async (
   try {
     const res = await axios.post("/u/login", { email, password });
     const { expiryTime, firstName } = res.data;
-
     setAuth(expiryTime, firstName);
+
     return { ...res.data, statusCode: res.status };
   } catch (err) {
     console.log(err.response);
@@ -33,6 +33,8 @@ export const signup = async (
       password,
       confirmPassword,
     });
+    setAuth(res.data.expiryTime, firstName);
+
     return { ...res.data, statusCode: res.status };
   } catch (err) {
     console.log(err.response);
