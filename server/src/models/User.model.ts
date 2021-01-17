@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import { Schema, Document, Model, model } from "mongoose";
 import bcrypt from "bcrypt";
 import { SALT_ROUNDS } from "../config/constants";
 import jwt from "jsonwebtoken";
@@ -13,6 +13,8 @@ export interface IUser extends Document {
   lastName: string;
   password: string;
   createdOn: Date;
+  createAccessToken: () => void;
+  createRefreshToken: () => void;
 }
 
 export interface UserForm extends IUser {
@@ -29,7 +31,7 @@ const UserSchema: Schema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   password: { type: String, required: true },
-  createdOn: { type: Date, required: true },
+  createdOn: { type: Date, required: true, default: new Date() },
 });
 
 UserSchema.pre("save", async function (this: IUser, next) {
@@ -74,4 +76,4 @@ UserSchema.methods = {
   },
 };
 
-export default mongoose.model<IUser>("User", UserSchema);
+export const User: Model<IUser> = model<IUser>("User", UserSchema);

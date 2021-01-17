@@ -1,5 +1,5 @@
 import passportLocal from "passport-local";
-import User from "../models/User.model";
+import { User } from "../models/User.model";
 import bcrypt from "bcrypt";
 import { validationResult } from "express-validator";
 

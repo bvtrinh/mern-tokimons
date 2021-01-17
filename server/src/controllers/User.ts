@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Request, Response, NextFunction, RequestHandler } from "express";
 import { validationResult } from "express-validator";
-import User, { IUser, UserForm, LoginForm } from "../models/User.model";
+import { User, UserForm } from "../models/User.model";
 import Token from "../models/Token.model";
 import {
   ACCESS_COOKIE_EXPIRY_TIME,
@@ -20,16 +20,35 @@ export const createUser: RequestHandler = async (req, res) => {
   const { email, firstName, lastName, password } = req.body as UserForm;
 
   try {
-    const newUser: IUser = new User({
+    const newUser = new User({
       email,
       firstName,
       lastName,
       password,
-      createdOn: new Date(),
     });
 
     await newUser.save();
-    return res.status(200).json({ message: "Created new user", error: false });
+
+    return res
+      .cookie("ACCESS_TOKEN", await newUser.createAccessToken(), {
+        httpOnly: true,
+        sameSite: "lax",
+        maxAge: ACCESS_COOKIE_EXPIRY_TIME,
+        secure: process.env.NODE_ENV === "production",
+      })
+      .cookie("REFRESH_TOKEN", await newUser.createRefreshToken(), {
+        httpOnly: true,
+        sameSite: "lax",
+        maxAge: REFRESH_COOKIE_EXPIRY_TIME,
+        secure: process.env.NODE_ENV === "production",
+      })
+      .status(200)
+      .json({
+        expiryTime: Date.now() + ACCESS_COOKIE_EXPIRY_TIME,
+        firstName: newUser.firstName,
+        message: "Successful in creating user",
+        error: false,
+      });
   } catch (err) {
     // In case of duplicate key errors
     if (err.code === 11000) {
@@ -53,26 +72,26 @@ export const loginUser = (req: Request, res: Response, next: NextFunction) => {
       if (!user) {
         return res.status(401).json({ error: true, message: info.message });
       } else {
-        const accessToken = await user.createAccessToken();
-        const refreshToken = await user.createRefreshToken();
-
-        const expiryTime = Date.now() + ACCESS_COOKIE_EXPIRY_TIME;
-
         return res
-          .cookie("ACCESS_TOKEN", accessToken, {
+          .cookie("ACCESS_TOKEN", await user.createAccessToken(), {
             httpOnly: true,
             sameSite: "lax",
             maxAge: ACCESS_COOKIE_EXPIRY_TIME,
             secure: process.env.NODE_ENV === "production",
           })
-          .cookie("REFRESH_TOKEN", refreshToken, {
+          .cookie("REFRESH_TOKEN", await user.createRefreshToken(), {
             httpOnly: true,
             sameSite: "lax",
             maxAge: REFRESH_COOKIE_EXPIRY_TIME,
             secure: process.env.NODE_ENV === "production",
           })
           .status(200)
-          .json({ expiryTime: expiryTime, firstName: user.firstName });
+          .json({
+            expiryTime: Date.now() + ACCESS_COOKIE_EXPIRY_TIME,
+            firstName: user.firstName,
+            message: "Successful login",
+            error: false,
+          });
       }
     }
   )(req, res);

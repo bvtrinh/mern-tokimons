@@ -1,5 +1,5 @@
 import { body } from "express-validator";
-import User, { IUser } from "../models/User.model";
+import { User, IUser } from "../models/User.model";
 import {
   MIN_LEN,
   MIN_LEN_PASS,

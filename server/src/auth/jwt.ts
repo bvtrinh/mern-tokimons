@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import Token from "../models/Token.model";
-import User from "../models/User.model";
+import { User } from "../models/User.model";
 import {
   ACCESS_COOKIE_EXPIRY_TIME,
   REFRESH_COOKIE_EXPIRY_TIME,
@@ -32,7 +32,7 @@ export const verifyToken = async (
     next();
   } catch (err) {
     console.error(err);
-    return res.sendStatus(403);
+    return res.status(401).json({ error: true, message: err.message });
   }
 };
 
