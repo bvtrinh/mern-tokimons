@@ -1,15 +1,11 @@
 import express, { json, urlencoded } from "express";
-import session from "express-session";
 import { resolve } from "path";
 import { config } from "dotenv";
 import { join } from "path";
 import { connect } from "./models/db";
 import cors from "cors";
-import connectMongo from "connect-mongo";
 import cookieParser from "cookie-parser";
-import Mongoose from "mongoose";
 import Routes from "./routes";
-const MongoStore = connectMongo(session);
 
 // Dotenv config
 config({ path: resolve(__dirname, "../.env") });
@@ -27,24 +23,5 @@ Routes(app);
 
 // Connect to DB
 connect();
-
-// Sessions
-app.use(
-  session({
-    // expire after 1 day
-    // maxAge: (24 * 60 * 60 * 1000) as number,
-    resave: true,
-    saveUninitialized: true,
-    store: new MongoStore({ mongooseConnection: Mongoose.connection }),
-    cookie: {
-      maxAge: 24 * 60 * 60 * 1000,
-    },
-    secret: process.env.SESSION_SECRET as string,
-  })
-);
-
-// app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-//   res.status(500).json({ message: err.message });
-// });
 
 app.listen(port, () => console.log(`Server started on port ${port}`));

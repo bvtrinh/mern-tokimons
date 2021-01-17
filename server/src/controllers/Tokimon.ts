@@ -1,22 +1,7 @@
 import { RequestHandler } from "express";
-import Tokimon, { ITokimon, IElement } from "../models/Tokimon.model";
+import { Tokimon, ITokimon } from "../models/Tokimon.model";
 import { validationResult } from "express-validator";
-
-const getHighestType = (elements: IElement) => {
-  let bestType: string = "";
-  let bestVal: number = -1;
-  let total: number = 0;
-
-  for (let [key, val] of Object.entries(elements)) {
-    if (val > bestVal) {
-      bestVal = val;
-      bestType = key;
-    }
-    total += val;
-  }
-
-  return { type: bestType, total: total };
-};
+import { getHighestType } from "../utils/helpers";
 
 export const createToki: RequestHandler = async (req, res) => {
   // Extract information from request
@@ -120,13 +105,11 @@ export const updateToki: RequestHandler = async (req, res) => {
     // Update on DB
     await Tokimon.updateOne({ _id: id }, newToki);
 
-    return res
-      .status(200)
-      .json({
-        payload: newToki,
-        message: "Updated the Tokimon.",
-        error: false,
-      });
+    return res.status(200).json({
+      payload: newToki,
+      message: "Updated the Tokimon.",
+      error: false,
+    });
   } catch (err) {
     // If it hits here most likely unable to find Tokimon
     console.log(err);

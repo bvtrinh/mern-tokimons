@@ -1,19 +1,19 @@
-import Mongoose from "mongoose";
+import mongoose from "mongoose";
 
-let database: Mongoose.Connection;
+let database: mongoose.Connection;
 
 export const connect = () => {
   const uri = process.env.MONGO_URI as string;
   if (database) {
     return;
   }
-  Mongoose.connect(uri, {
+  mongoose.connect(uri, {
     useNewUrlParser: true,
     useFindAndModify: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
   });
-  database = Mongoose.connection;
+  database = mongoose.connection;
   database.once("open", async () => {
     console.log("Connected to database");
   });
@@ -25,5 +25,5 @@ export const disconnect = () => {
   if (!database) {
     return;
   }
-  Mongoose.disconnect();
+  mongoose.disconnect();
 };

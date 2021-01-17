@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import { Schema, Document, Model, model } from "mongoose";
 import { IUser } from "./User.model";
 
 export interface IElement {
@@ -39,4 +39,7 @@ const TokimonSchema: Schema = new Schema({
   owner: { type: Schema.Types.ObjectId },
 });
 
-export default mongoose.model<ITokimon>("Tokimon", TokimonSchema);
+export const Tokimon: Model<ITokimon> = model<ITokimon>(
+  "Tokimon",
+  TokimonSchema
+);

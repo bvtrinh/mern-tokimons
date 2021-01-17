@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import { Schema, Document, Model, model } from "mongoose";
 import { REFRESH_MONGO_EXPIRY_TIME } from "../config/constants";
 
 export interface IToken extends Document {
@@ -15,4 +15,4 @@ const TokenSchema: Schema = new Schema({
   },
 });
 
-export default mongoose.model<IToken>("Token", TokenSchema);
+export const Token: Model<IToken> = model<IToken>("Token", TokenSchema);

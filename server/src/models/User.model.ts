@@ -2,7 +2,7 @@ import { Schema, Document, Model, model } from "mongoose";
 import bcrypt from "bcrypt";
 import { SALT_ROUNDS } from "../config/constants";
 import jwt from "jsonwebtoken";
-import Token from "./Token.model";
+import { Token } from "./Token.model";
 import {
   JWT_ACCESS_EXPIRY_TIME,
   JWT_REFRESH_EXPIRY_TIME,

@@ -3,8 +3,13 @@ import {
   userSignUpValidation,
   loginValidation,
 } from "../middleware/validation";
-import { createUser, loginUser, logoutUser } from "../controllers/User";
-import { verifyToken, renewTokens } from "../auth/jwt";
+import {
+  createUser,
+  loginUser,
+  logoutUser,
+  renewTokens,
+} from "../controllers/User";
+import { verifyToken } from "../middleware/jwt";
 
 const router = Router();
 

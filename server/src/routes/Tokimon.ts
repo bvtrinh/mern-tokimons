@@ -7,7 +7,7 @@ import {
   deleteToki,
 } from "../controllers/Tokimon";
 import { tokiValidation } from "../middleware/validation";
-import { verifyToken } from "../auth/jwt";
+import { verifyToken } from "../middleware/jwt";
 
 const router = Router();
 
