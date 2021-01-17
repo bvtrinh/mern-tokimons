@@ -5,9 +5,6 @@ I like the idea of having a target model (in this case "Tokimons") and building
 a CRUD app around it. This was derived from my earlier iteration of it using only
 server side rendering with EJS and Express.
 
-Note: I have disabled signup to prevent someone from filling up the DB
-(probably no one will be looking at this site but I'm paranoid)
-
 ## Features
 
 - Add a Tokimon to the database
