@@ -62,9 +62,17 @@ class TokiInfo extends Component<TokiInfoProps, State> {
 
   async componentDidMount() {
     const id = this.props.match.params.id;
-    const { name, height, weight, elements, type, total } = (await (
-      await getOneToki(id)
-    ).payload) as TokimonInfo;
+    const res = await getOneToki(id);
+    if (res.statusCode === 401) this.props.setAlertHandler(res);
+
+    const {
+      name,
+      height,
+      weight,
+      elements,
+      type,
+      total,
+    } = res.payload as TokimonInfo;
 
     this.setState({
       _id: id,

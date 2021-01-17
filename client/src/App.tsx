@@ -12,7 +12,7 @@ import { TokimonFormValues, FullTokimon } from "./models/tokimon";
 import { ResponseFormat } from "./models/response";
 import { logout, refreshTokens } from "./api/user";
 import { createToki } from "./api/tokimon";
-import { checkAuth } from "./utils/auth";
+import { checkAuth, clearAuth } from "./utils/auth";
 import { REFRESH_TIME } from "./config/constants";
 import Alert from "react-bootstrap/Alert";
 import Container from "react-bootstrap/Container";
@@ -113,6 +113,7 @@ class App extends Component<{}, StateTypes> {
       message: res.message,
     });
     if (res.statusCode === 401) {
+      clearAuth();
       return <Redirect to="/u/login" />;
     }
   };
@@ -176,7 +177,17 @@ class App extends Component<{}, StateTypes> {
                   <TokiInfo setAlertHandler={this.setAlertHandler} {...props} />
                 )}
               />
-              <Route exact path="/" component={Home} />
+              <Route
+                exact
+                path="/"
+                render={(props) => (
+                  <Home
+                    setAlertHandler={this.setAlertHandler}
+                    createSubmit={this.state.submitted}
+                    {...props}
+                  />
+                )}
+              />
             </Switch>
           </PrivateRoute>
         </Switch>

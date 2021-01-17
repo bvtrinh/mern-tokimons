@@ -13,6 +13,7 @@ export const login = async (
 
     return { ...res.data, statusCode: res.status };
   } catch (err) {
+    clearAuth();
     return { ...err.response.data, statusCode: err.response.status };
   }
 };
@@ -36,6 +37,7 @@ export const signup = async (
 
     return { ...res.data, statusCode: res.status };
   } catch (err) {
+    clearAuth();
     return { ...err.response.data, statusCode: err.response.status };
   }
 };
@@ -64,6 +66,7 @@ export const refreshTokens = async (): Promise<ResponseFormat> => {
         statusCode: 503,
       };
     }
+    clearAuth();
     return { ...err.response.data, statusCode: err.response.status };
   }
 };

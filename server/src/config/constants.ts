@@ -10,7 +10,7 @@ export const MIN_LEN_PASS = 8;
 export const MAX_LEN_PASS = 20;
 
 // access token expires in 15min
-export const JWT_ACCESS_EXPIRY_TIME = "15";
+export const JWT_ACCESS_EXPIRY_TIME = "15m";
 export const JWT_REFRESH_EXPIRY_TIME = "1d";
 
 // refresh token expires in 1day
