@@ -15,4 +15,5 @@ export const setAuth = (expiry: string, firstName: string) => {
 
 export const clearAuth = () => {
   localStorage.removeItem("expiry");
+  localStorage.removeItem("firstName");
 };
