@@ -71,6 +71,12 @@ class App extends Component<{}, StateTypes> {
     }));
   };
 
+  toggleCreateSubmitHandler = () => {
+    this.setState((prevState: StateTypes) => ({
+      submitted: !prevState.submitted,
+    }));
+  };
+
   logoutHandler = async () => {
     const res = await logout();
     this.setAlertHandler(res);
@@ -182,6 +188,7 @@ class App extends Component<{}, StateTypes> {
                 path="/"
                 render={(props) => (
                   <Home
+                    toggleCreateSubmitHandler={this.toggleCreateSubmitHandler}
                     setAlertHandler={this.setAlertHandler}
                     createSubmit={this.state.submitted}
                     {...props}

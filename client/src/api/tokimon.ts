@@ -4,7 +4,7 @@ import { ResponseFormat } from "../models/response";
 
 export const getAllTokis = async (): Promise<ResponseFormat> => {
   try {
-    const res = await await axios.get("/t");
+    const res = await axios.get("/t");
     return { ...res.data, statusCode: res.status };
   } catch (err) {
     return { ...err.response.data, statusCode: err.response.status };

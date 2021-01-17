@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { RouteComponentProps } from "react-router-dom";
 import TokiList from "../UI/TokiList";
 import { getAllTokis } from "../../api/tokimon";
 import { Tokimon } from "../../models/tokimon";
@@ -11,38 +12,49 @@ import Button from "react-bootstrap/Button";
 import FormControl from "react-bootstrap/FormControl";
 import { FcSearch } from "react-icons/fc";
 import classes from "../../css/Home.module.css";
+import { ResponseFormat } from "../../models/response";
 
+interface HomeProps extends RouteComponentProps {
+  createSubmit: boolean;
+  toggleCreateSubmitHandler: () => void;
+  setAlertHandler: (res: ResponseFormat) => void;
+}
 interface StateTypes {
   tokimons: Tokimon[];
   searchStr: string;
-  error: boolean;
-  message: string;
 }
 
-class Home extends Component<{}, StateTypes> {
+class Home extends Component<HomeProps, StateTypes> {
   state = {
     tokimons: [] as Tokimon[],
     searchStr: "",
-    error: false,
-    message: "",
   };
 
-  async componentDidMount() {
-    if (checkAuth()) {
-      const res = await getAllTokis();
+  async getTokimons() {
+    const res = await getAllTokis();
+    if (res.statusCode === 401) this.props.setAlertHandler(res);
 
-      const tokimons = res.payload as Tokimon[];
-      this.setState({
-        tokimons: tokimons,
-        error: res.error,
-        message: res.message,
-      });
+    const tokimons = res.payload as Tokimon[];
+    this.setState({
+      tokimons: tokimons,
+    });
+  }
+
+  componentDidMount() {
+    if (checkAuth()) {
+      this.getTokimons();
     }
   }
 
-  // TODO: this shouldn't be type any
-  searchHandler = (e: any) => {
-    this.setState({ searchStr: e.target.value });
+  componentDidUpdate(nextProps: HomeProps, nextState: StateTypes) {
+    if (this.props.createSubmit) {
+      this.getTokimons();
+      this.props.toggleCreateSubmitHandler();
+    }
+  }
+
+  searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ searchStr: e.currentTarget.value });
   };
 
   searchResults = () => {
@@ -55,6 +67,7 @@ class Home extends Component<{}, StateTypes> {
   render() {
     const isAuth = checkAuth();
     const filteredTokis = this.state.tokimons ? this.searchResults() : [];
+
     const tokis =
       filteredTokis.length > 0 ? (
         <TokiList tokimons={filteredTokis} />
