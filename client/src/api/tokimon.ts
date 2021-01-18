@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "./axiosSetup";
 import { FullTokimon } from "../models/tokimon";
 import { ResponseFormat } from "../models/response";
 

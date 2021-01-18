@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "./axiosSetup";
 import { ResponseFormat } from "../models/response";
 import { setAuth, clearAuth } from "../utils/auth";
 

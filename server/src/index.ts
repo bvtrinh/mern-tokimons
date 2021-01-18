@@ -8,7 +8,9 @@ import cookieParser from "cookie-parser";
 import Routes from "./routes";
 
 // Dotenv config
-config({ path: resolve(__dirname, "../.env") });
+if (process.env.NODE_ENV === "development") {
+  config({ path: resolve(__dirname, "../.env") });
+}
 const port = process.env.PORT || 5000;
 
 const app = express();
