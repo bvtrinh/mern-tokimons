@@ -42,13 +42,11 @@ export const createUser: RequestHandler = async (req, res) => {
         httpOnly: true,
         sameSite: "lax",
         maxAge: ACCESS_COOKIE_EXPIRY_TIME,
-        secure: process.env.NODE_ENV === "production",
       })
       .cookie("REFRESH_TOKEN", await newUser.createRefreshToken(), {
         httpOnly: true,
         sameSite: "lax",
         maxAge: REFRESH_COOKIE_EXPIRY_TIME,
-        secure: process.env.NODE_ENV === "production",
       })
       .status(200)
       .json({
@@ -85,13 +83,11 @@ export const loginUser = (req: Request, res: Response, next: NextFunction) => {
             httpOnly: true,
             sameSite: "lax",
             maxAge: ACCESS_COOKIE_EXPIRY_TIME,
-            secure: process.env.NODE_ENV === "production",
           })
           .cookie("REFRESH_TOKEN", await user.createRefreshToken(), {
             httpOnly: true,
             sameSite: "lax",
             maxAge: REFRESH_COOKIE_EXPIRY_TIME,
-            secure: process.env.NODE_ENV === "production",
           })
           .status(200)
           .json({
@@ -158,13 +154,11 @@ export const renewTokens = async (
         httpOnly: true,
         sameSite: "lax",
         maxAge: ACCESS_COOKIE_EXPIRY_TIME,
-        secure: process.env.NODE_ENV === "production",
       })
       .cookie("REFRESH_TOKEN", await user.createRefreshToken(), {
         httpOnly: true,
         sameSite: "lax",
         maxAge: REFRESH_COOKIE_EXPIRY_TIME,
-        secure: process.env.NODE_ENV === "production",
       })
       .status(200)
       .json({
