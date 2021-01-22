@@ -1,0 +1,50 @@
+version: "3.7"
+
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    env_file: ./server/.env.production
+    ports:
+      - 8080:8080
+    volumes:
+      - ./server/dist:/app/server/dist
+    depends_on:
+      - db
+    networks:
+      - app-network
+    restart: always
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    volumes:
+      - ./client/src:/app/client/src
+      - ./client/public:/app/client/public
+    depends_on:
+      - server
+    ports:
+      - 80:80
+    restart: always
+    networks:
+      - app-network
+  db:
+    image: mongo
+    ports:
+      - ${MONGO_PORT}:${MONGO_PORT}
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    volumes:
+      - tokimons-db:/data/db
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  tokimons-db:
+    driver: local
