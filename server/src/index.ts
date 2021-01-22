@@ -16,7 +16,7 @@ const port = process.env.PORT || 5000;
 const app = express();
 app.use(json());
 app.use(cookieParser());
-app.use(express.static(join(__dirname, "public")));
+app.use(express.static(join(__dirname, "../../client/build/")));
 app.use(urlencoded({ extended: true }));
 app.use(cors());
 
