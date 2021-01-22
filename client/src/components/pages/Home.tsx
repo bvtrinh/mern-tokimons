@@ -46,7 +46,7 @@ class Home extends Component<HomeProps, StateTypes> {
     }
   }
 
-  componentDidUpdate(nextProps: HomeProps, nextState: StateTypes) {
+  componentDidUpdate() {
     if (this.props.createSubmit) {
       this.getTokimons();
       this.props.toggleCreateSubmitHandler();

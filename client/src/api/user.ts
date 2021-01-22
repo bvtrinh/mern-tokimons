@@ -1,4 +1,4 @@
-import axios from "./axiosSetup";
+import axios from "axios";
 import { ResponseFormat } from "../models/response";
 import { setAuth, clearAuth } from "../utils/auth";
 
@@ -7,7 +7,7 @@ export const login = async (
   password: string
 ): Promise<ResponseFormat> => {
   try {
-    const res = await axios.post("/u/login", { email, password });
+    const res = await axios.post("/api/u/login", { email, password });
     const { expiryTime, firstName } = res.data;
     setAuth(expiryTime, firstName);
 
@@ -26,7 +26,7 @@ export const signup = async (
   confirmPassword: string
 ): Promise<ResponseFormat> => {
   try {
-    const res = await axios.post("/u/signup", {
+    const res = await axios.post("/api/u/signup", {
       firstName,
       lastName,
       email,
@@ -44,7 +44,7 @@ export const signup = async (
 
 export const logout = async (): Promise<ResponseFormat> => {
   try {
-    const res = await axios.get("/u/logout");
+    const res = await axios.get("/api/u/logout");
     clearAuth();
     return { ...res.data, statusCode: res.status };
   } catch (err) {
@@ -54,7 +54,7 @@ export const logout = async (): Promise<ResponseFormat> => {
 
 export const refreshTokens = async (): Promise<ResponseFormat> => {
   try {
-    const res = await axios.get("/u/refresh");
+    const res = await axios.get("/api/u/refresh");
     setAuth(res.data.expiryTime, res.data.firstName);
     return { ...res.data, statusCode: res.status };
   } catch (err) {
