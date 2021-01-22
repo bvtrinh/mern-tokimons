@@ -1,16 +1,16 @@
 import express, { json, urlencoded } from "express";
 import { resolve } from "path";
-import { config } from "dotenv";
 import { join } from "path";
 import { connect } from "./models/db";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import Routes from "./routes";
 
-// Dotenv config
 if (process.env.NODE_ENV === "development") {
-  config({ path: resolve(__dirname, "../.env") });
+  // eslint-disable-next-line
+  require("dotenv").config({ path: resolve(__dirname, "../.env") });
 }
+
 const port = process.env.PORT || 5000;
 
 const app = express();
