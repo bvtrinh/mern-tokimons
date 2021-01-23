@@ -14,6 +14,8 @@ RUN npm install --silent --production=true
 # Copy the server files over
 COPY . /usr/src/app/server/
 
-EXPOSE 8080
+# Heroku does not support this
+# EXPOSE 80
+
 # Command to run them
 CMD ["npm", "start"]
