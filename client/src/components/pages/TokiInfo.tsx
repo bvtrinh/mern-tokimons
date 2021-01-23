@@ -63,7 +63,7 @@ class TokiInfo extends Component<TokiInfoProps, State> {
   async componentDidMount() {
     const id = this.props.match.params.id;
     const res = await getOneToki(id);
-    if (res.statusCode === 401) this.props.setAlertHandler(res);
+    if (res.statusCode === 401) return this.props.setAlertHandler(res);
 
     const {
       name,
@@ -116,7 +116,7 @@ class TokiInfo extends Component<TokiInfoProps, State> {
     };
 
     const res = await updateToki(toki);
-    this.props.setAlertHandler(res);
+    if (res.statusCode === 401) return this.props.setAlertHandler(res);
 
     this.setState({
       name,
@@ -132,7 +132,7 @@ class TokiInfo extends Component<TokiInfoProps, State> {
 
   deleteSubmitHandler = async () => {
     const res = await deleteToki(this.state._id);
-    this.props.setAlertHandler(res);
+    if (res.statusCode === 401) return this.props.setAlertHandler(res);
     if (res.statusCode === 200) {
       this.props.history.push("/");
     } else {

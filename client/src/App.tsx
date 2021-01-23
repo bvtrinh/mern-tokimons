@@ -120,6 +120,7 @@ class App extends Component<{}, StateTypes> {
     });
     if (res.statusCode === 401) {
       clearAuth();
+      this.toggleAuthHandler();
       return <Redirect to="/u/login" />;
     }
   };
