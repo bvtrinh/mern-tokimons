@@ -107,3 +107,7 @@ dist
 
 # TODO LIST
 todo.md
+
+# builds
+build/
+dist/
