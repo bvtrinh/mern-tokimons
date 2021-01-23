@@ -1,8 +1,8 @@
 # Tokimons with MERN
 
 An assignment that was given during one of my software engineering courses.
-I like the idea of having a target model (in this case "Tokimons") and building
-a CRUD app around it. This was derived from my earlier iteration of it using only
+I thought it was a good practice exercise for a CRUD app and liked the concepts of "Tokimons".
+This was derived from my earlier iteration of it using only
 server side rendering with EJS and Express.
 
 Link to app: https://mern-tokimons.herokuapp.com/
@@ -39,6 +39,8 @@ heroku container:login
 
 # Create a Heroku app
 heroku create
+
+# NOTE: Setup your env variables in your Heroku dashboard for the app
 
 # Push to the container registry
 heroku container:push web
