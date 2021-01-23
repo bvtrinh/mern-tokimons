@@ -5,8 +5,11 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "node dist/index.js",
+    "build": "tsc",
     "server": "nodemon -r dotenv/config ",
+    "build:client": "npm run build:prod --prefix ../client",
     "client": "npm start --prefix ../client",
+    "build:prod": "npm run build && npm run build:client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Tyler Trinh",

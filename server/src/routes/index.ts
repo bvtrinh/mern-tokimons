@@ -4,13 +4,13 @@ import TokiRoutes from "./Tokimon";
 import UserRoutes from "./User";
 
 const indexHandler: RequestHandler = async (req, res) => {
-  res.sendFile(join(__dirname, "../../../client/build/index.html"));
+  return res.status(200).sendFile(join(__dirname, "../../build/index.html"));
 };
 
 const indexRouter = (app: Express) => {
   app.use("/api/t", TokiRoutes);
   app.use("/api/u", UserRoutes);
-  app.get("/", indexHandler);
+  app.get("/*", indexHandler);
 };
 
 export default indexRouter;

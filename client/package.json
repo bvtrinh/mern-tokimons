@@ -23,6 +23,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build:prod": "react-scripts build && rm -rf ../server/build && mv build ../server",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -32,7 +33,7 @@
       "react-app/jest"
     ]
   },
-  "proxy": "http://server:8080",
+  "proxy": "http://localhost:8080",
   "browserslist": {
     "production": [
       ">0.2%",
