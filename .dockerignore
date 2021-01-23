@@ -1,6 +1,0 @@
-.git
-server/.env.*
-node_modules/
-server/src/
-server/nodemon.json
-client/.eslintcache

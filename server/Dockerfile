@@ -2,17 +2,18 @@
 FROM node:lts-alpine3.10
 
 # Create and set the working directory
-RUN mkdir -p /app/server
-WORKDIR /app/server
+RUN mkdir -p /usr/src/app/server
+WORKDIR /usr/src/app/server
 
 # Copy the dependency files over
-COPY package*.json /app/server/
+COPY package*.json /usr/src/app/server/
 
 # Install dependencies
 RUN npm install --silent --production=true
 
 # Copy the server files over
-COPY . /app/server/
+COPY . /usr/src/app/server/
 
+EXPOSE 8080
 # Command to run them
 CMD ["npm", "start"]
