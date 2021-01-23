@@ -5,6 +5,8 @@ I like the idea of having a target model (in this case "Tokimons") and building
 a CRUD app around it. This was derived from my earlier iteration of it using only
 server side rendering with EJS and Express.
 
+Link to app: https://mern-tokimons.herokuapp.com/
+
 ## Features
 
 - Add a Tokimon to the database
@@ -15,10 +17,38 @@ server side rendering with EJS and Express.
 
 ### Additional Features
 
-- User login and uses JWTs
+- User login with JWTs (access and refresh tokens)
 - Match a Tokimon's highest attribute with a color
 - Display a chart of a Tokimon's attributes
 - Search for Tokimons with names
+
+## Deployment
+
+This app was deployed via Docker and Heroku. The React app was bundled up and the `index.html` file is being served by the Express server. To setup up and deploy the app:
+
+```bash
+cd server
+# Create production build
+npm run build:prod
+
+# Build docker image
+docker build -t tokimons-app .
+
+# Login to container registry
+heroku container:login
+
+# Create a Heroku app
+heroku create
+
+# Push to the container registry
+heroku container:push web
+
+# Deploy the container to your Heroku app
+heroku container:release web
+
+# Open it in your browser
+heroku open
+```
 
 ## Built with
 
