@@ -1,4 +1,4 @@
-# Tokimons with MERN
+# 🐹 Tokimons with MERN
 
 An assignment that was given during one of my software engineering courses.
 I thought it was a good practice exercise for a CRUD app and liked the concepts of "Tokimons".
@@ -7,7 +7,7 @@ server side rendering with EJS and Express.
 
 Link to app: https://mern-tokimons.herokuapp.com/
 
-## Features
+## ✨ Features
 
 - Add a Tokimon to the database
 - Display all your Tokimons
@@ -22,7 +22,7 @@ Link to app: https://mern-tokimons.herokuapp.com/
 - Display a chart of a Tokimon's attributes
 - Search for Tokimons with names
 
-## Deployment
+## 🚀 Deployment
 
 This app was deployed via Docker and Heroku. The React app was bundled up and the `index.html` file is being served by the Express server. To setup up and deploy the app:
 
@@ -52,7 +52,7 @@ heroku container:release web
 heroku open
 ```
 
-## Built with
+## 🔨 Built with
 
 - [MongoDB](https://www.mongodb.com/) - stores Tokimon and user information
 - [Express](https://expressjs.com/) - backend framework
