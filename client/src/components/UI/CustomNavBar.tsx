@@ -45,20 +45,10 @@ const CustomNavBar: React.FC<Props> = (props) => {
   return (
     <div className={classes.bgColor}>
       <Container>
-        <Navbar
-          collapseOnSelect
-          expand="md"
-          variant="dark"
-          className={classes.bgColor}
-        >
+        <Navbar collapseOnSelect expand="md" variant="dark" className={classes.bgColor}>
           <NavLink to="/">
             <Navbar.Brand>
-              <Image
-                fluid
-                src="/images/full-tokimon.png"
-                alt="brand-logo"
-                width="100"
-              />
+              <Image fluid src="/images/full-tokimon.png" alt="brand-logo" width="100" />
             </Navbar.Brand>
           </NavLink>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />

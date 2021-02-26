@@ -10,30 +10,17 @@ import {
 } from "../config/constants";
 
 export const tokiValidation = [
-  body("name", "Invalid name")
-    .exists()
-    .isString()
-    .isLength({ min: MIN_LEN, max: MAX_LEN }),
+  body("name", "Invalid name").exists().isString().isLength({ min: MIN_LEN, max: MAX_LEN }),
   body("height", "Invalid height").exists().isInt({ min: 1 }),
   body("weight", "Invalid weight").exists().isInt({ min: 1 }),
   body("elements.electric", "Invalid Electric Level")
     .exists()
     .isInt({ min: MIN_LEVEL, max: MAX_LEVEL }),
-  body("elements.fly", "Invalid Fly Level")
-    .exists()
-    .isInt({ min: MIN_LEVEL, max: MAX_LEVEL }),
-  body("elements.fight", "Invalid Fight Level")
-    .exists()
-    .isInt({ min: MIN_LEVEL, max: MAX_LEVEL }),
-  body("elements.fire", "Invalid Fire Level")
-    .exists()
-    .isInt({ min: MIN_LEVEL, max: MAX_LEVEL }),
-  body("elements.ice", "Invalid Ice Level")
-    .exists()
-    .isInt({ min: MIN_LEVEL, max: MAX_LEVEL }),
-  body("elements.water", "Invalid Water Level")
-    .exists()
-    .isInt({ min: MIN_LEVEL, max: MAX_LEVEL }),
+  body("elements.fly", "Invalid Fly Level").exists().isInt({ min: MIN_LEVEL, max: MAX_LEVEL }),
+  body("elements.fight", "Invalid Fight Level").exists().isInt({ min: MIN_LEVEL, max: MAX_LEVEL }),
+  body("elements.fire", "Invalid Fire Level").exists().isInt({ min: MIN_LEVEL, max: MAX_LEVEL }),
+  body("elements.ice", "Invalid Ice Level").exists().isInt({ min: MIN_LEVEL, max: MAX_LEVEL }),
+  body("elements.water", "Invalid Water Level").exists().isInt({ min: MIN_LEVEL, max: MAX_LEVEL }),
 ];
 
 export const userSignUpValidation = [
@@ -72,9 +59,7 @@ export const userSignUpValidation = [
     .isString()
     .withMessage("Must be a string")
     .matches(/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/i)
-    .withMessage(
-      "Must contain at least 1 uppercase, 1 lowercase and 1 special character"
-    )
+    .withMessage("Must contain at least 1 uppercase, 1 lowercase and 1 special character")
     .isLength({ min: MIN_LEN_PASS, max: MAX_LEN_PASS })
     .withMessage(`Minimum length is ${MIN_LEN_PASS}`),
   body("confirmPassword", "Invalid password")
@@ -83,9 +68,7 @@ export const userSignUpValidation = [
     .isString()
     .withMessage("Must be a string")
     .matches(/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/i)
-    .withMessage(
-      "Must contain at least 1 uppercase, 1 lowercase and 1 special character"
-    )
+    .withMessage("Must contain at least 1 uppercase, 1 lowercase and 1 special character")
     .isLength({ min: MIN_LEN_PASS, max: MAX_LEN_PASS })
     .withMessage(`Minimum length is ${MIN_LEN_PASS}`)
     .custom((val: string, { req }) => {

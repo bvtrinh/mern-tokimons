@@ -7,7 +7,7 @@ const indexHandler: RequestHandler = async (req, res) => {
   return res.status(200).sendFile(join(__dirname, "../../build/index.html"));
 };
 
-const indexRouter = (app: Express) => {
+const indexRouter = (app: Express): void => {
   app.use("/api/t", TokiRoutes);
   app.use("/api/u", UserRoutes);
   app.get("/*", indexHandler);

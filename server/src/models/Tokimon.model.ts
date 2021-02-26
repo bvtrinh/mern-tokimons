@@ -39,7 +39,4 @@ const TokimonSchema: Schema = new Schema({
   owner: { type: Schema.Types.ObjectId },
 });
 
-export const Tokimon: Model<ITokimon> = model<ITokimon>(
-  "Tokimon",
-  TokimonSchema
-);
+export const Tokimon: Model<ITokimon> = model<ITokimon>("Tokimon", TokimonSchema);

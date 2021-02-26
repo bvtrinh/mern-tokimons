@@ -1,10 +1,5 @@
 import * as yup from "yup";
-import {
-  MIN_LEN,
-  MAX_LEN,
-  MIN_PASS_LEN,
-  MAX_PASS_LEN,
-} from "../config/constants";
+import { MIN_LEN, MAX_LEN, MIN_PASS_LEN, MAX_PASS_LEN } from "../config/constants";
 
 export const userLoginSchema = yup.object().shape({
   email: yup.string().email("Must be a valid email").required("Required"),
@@ -12,16 +7,8 @@ export const userLoginSchema = yup.object().shape({
 });
 
 export const userSignupSchema = yup.object().shape({
-  firstName: yup
-    .string()
-    .min(MIN_LEN, "Too short!")
-    .max(MAX_LEN, "Too long!")
-    .required("Required"),
-  lastName: yup
-    .string()
-    .min(MIN_LEN, "Too short!")
-    .max(MAX_LEN, "Too long!")
-    .required("Required"),
+  firstName: yup.string().min(MIN_LEN, "Too short!").max(MAX_LEN, "Too long!").required("Required"),
+  lastName: yup.string().min(MIN_LEN, "Too short!").max(MAX_LEN, "Too long!").required("Required"),
   email: yup.string().email("Must be a valid email").required("Required"),
   password: yup
     .string()

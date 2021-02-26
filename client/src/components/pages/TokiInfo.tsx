@@ -6,11 +6,7 @@ import TokiForm from "../forms/TokiForm";
 import ConfirmDelete from "../forms/ConfirmDelete";
 import { getOneToki, updateToki, deleteToki } from "../../api/tokimon";
 import { ChartSettings, options } from "../../config/chartSettings";
-import {
-  TokimonFormValues,
-  FullTokimon,
-  TokimonInfo,
-} from "../../models/tokimon";
+import { TokimonFormValues, FullTokimon, TokimonInfo } from "../../models/tokimon";
 import { ResponseFormat } from "../../models/response";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
@@ -65,14 +61,7 @@ class TokiInfo extends Component<TokiInfoProps, State> {
     const res = await getOneToki(id);
     if (res.statusCode === 401) return this.props.setAlertHandler(res);
 
-    const {
-      name,
-      height,
-      weight,
-      elements,
-      type,
-      total,
-    } = res.payload as TokimonInfo;
+    const { name, height, weight, elements, type, total } = res.payload as TokimonInfo;
 
     this.setState({
       _id: id,
@@ -95,17 +84,7 @@ class TokiInfo extends Component<TokiInfoProps, State> {
   };
 
   updateSubmitHandler = async (values: TokimonFormValues) => {
-    const {
-      name,
-      height,
-      weight,
-      electric,
-      fly,
-      fight,
-      fire,
-      ice,
-      water,
-    } = values;
+    const { name, height, weight, electric, fly, fight, fire, ice, water } = values;
     const elements = { electric, fly, fight, fire, ice, water };
     const toki: FullTokimon = {
       _id: this.state._id,

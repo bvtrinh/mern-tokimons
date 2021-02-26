@@ -26,10 +26,7 @@ export const loginStrategy = new LocalStrategy(
         });
       }
 
-      const isMatchPass = await bcrypt.compare(
-        password,
-        user.password as string
-      );
+      const isMatchPass = await bcrypt.compare(password, user.password as string);
 
       if (isMatchPass) {
         return done(undefined, user, { message: "Login successful" });

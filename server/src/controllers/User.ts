@@ -1,13 +1,10 @@
 import passport from "passport";
 import jwt from "jsonwebtoken";
-import { Request, Response, NextFunction, RequestHandler } from "express";
+import { Request, Response, RequestHandler } from "express";
 import { validationResult } from "express-validator";
 import { User, UserForm } from "../models/User.model";
 import { Token } from "../models/Token.model";
-import {
-  ACCESS_COOKIE_EXPIRY_TIME,
-  REFRESH_COOKIE_EXPIRY_TIME,
-} from "../config/constants";
+import { ACCESS_COOKIE_EXPIRY_TIME, REFRESH_COOKIE_EXPIRY_TIME } from "../config/constants";
 import { loginStrategy } from "../auth/local";
 passport.use("login", loginStrategy);
 
@@ -67,38 +64,34 @@ export const createUser: RequestHandler = async (req, res) => {
   }
 };
 
-export const loginUser = (req: Request, res: Response, next: NextFunction) => {
-  passport.authenticate(
-    "login",
-    { session: false },
-    async function (err, user, info) {
-      if (err) {
-        return res.status(401);
-      }
-      if (!user) {
-        return res.status(401).json({ error: true, message: info.message });
-      } else {
-        return res
-          .cookie("ACCESS_TOKEN", await user.createAccessToken(), {
-            httpOnly: true,
-            sameSite: "lax",
-            maxAge: ACCESS_COOKIE_EXPIRY_TIME,
-          })
-          .cookie("REFRESH_TOKEN", await user.createRefreshToken(), {
-            httpOnly: true,
-            sameSite: "lax",
-            maxAge: REFRESH_COOKIE_EXPIRY_TIME,
-          })
-          .status(200)
-          .json({
-            expiryTime: Date.now() + ACCESS_COOKIE_EXPIRY_TIME,
-            firstName: user.firstName,
-            message: "Successful login",
-            error: false,
-          });
-      }
+export const loginUser = (req: Request, res: Response): void => {
+  passport.authenticate("login", { session: false }, async function (err, user, info) {
+    if (err) {
+      return res.status(401);
     }
-  )(req, res);
+    if (!user) {
+      return res.status(401).json({ error: true, message: info.message });
+    } else {
+      return res
+        .cookie("ACCESS_TOKEN", await user.createAccessToken(), {
+          httpOnly: true,
+          sameSite: "lax",
+          maxAge: ACCESS_COOKIE_EXPIRY_TIME,
+        })
+        .cookie("REFRESH_TOKEN", await user.createRefreshToken(), {
+          httpOnly: true,
+          sameSite: "lax",
+          maxAge: REFRESH_COOKIE_EXPIRY_TIME,
+        })
+        .status(200)
+        .json({
+          expiryTime: Date.now() + ACCESS_COOKIE_EXPIRY_TIME,
+          firstName: user.firstName,
+          message: "Successful login",
+          error: false,
+        });
+    }
+  })(req, res);
 };
 
 export const logoutUser: RequestHandler = async (req, res) => {
@@ -121,23 +114,15 @@ export const logoutUser: RequestHandler = async (req, res) => {
   }
 };
 
-export const renewTokens = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const renewTokens = async (req: Request, res: Response): Promise<Response> => {
   try {
     const refreshToken = req.cookies["REFRESH_TOKEN"];
     if (!refreshToken)
-      return res
-        .status(401)
-        .json({ message: "Access denied, token missing", error: true });
+      return res.status(401).json({ message: "Access denied, token missing", error: true });
 
     const refreshTokenDB = await Token.findOne({ token: refreshToken });
     if (!refreshTokenDB) {
-      return res
-        .status(401)
-        .json({ message: "Access denied, token missing", error: true });
+      return res.status(401).json({ message: "Access denied, token missing", error: true });
     }
 
     const payload = jwt.verify(

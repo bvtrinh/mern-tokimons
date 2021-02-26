@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 let database: mongoose.Connection;
 
-export const connect = () => {
+export const connect = (): void => {
   const uri = process.env.MONGO_URI as string;
   if (database) {
     return;
@@ -21,7 +21,7 @@ export const connect = () => {
     console.log("Error connecting to database");
   });
 };
-export const disconnect = () => {
+export const disconnect = (): void => {
   if (!database) {
     return;
   }

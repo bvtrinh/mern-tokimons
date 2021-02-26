@@ -150,11 +150,7 @@ const TokiForm: React.FC<Props> = (props) => {
           </Row>
 
           <div className={classes.btnPlacement}>
-            <Button
-              onClick={props.toggleModal}
-              className="mx-2"
-              variant="secondary"
-            >
+            <Button onClick={props.toggleModal} className="mx-2" variant="secondary">
               Cancel
             </Button>
             <Button type="submit" variant="primary">

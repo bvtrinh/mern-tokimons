@@ -89,17 +89,7 @@ class App extends Component<{}, StateTypes> {
   };
 
   createSubmitHandler = async (values: TokimonFormValues) => {
-    const {
-      name,
-      height,
-      weight,
-      electric,
-      fly,
-      fight,
-      fire,
-      ice,
-      water,
-    } = values;
+    const { name, height, weight, electric, fly, fight, fire, ice, water } = values;
     const elements = { electric, fly, fight, fire, ice, water };
     const toki: FullTokimon = {
       name,
@@ -150,10 +140,7 @@ class App extends Component<{}, StateTypes> {
           onHide={this.toggleCreateModalHandler}
           title="Create a Tokimon!"
         >
-          <TokiForm
-            submit={this.createSubmitHandler}
-            toggleModal={this.toggleCreateModalHandler}
-          />
+          <TokiForm submit={this.createSubmitHandler} toggleModal={this.toggleCreateModalHandler} />
         </TokiModal>
         <Switch>
           <Route
@@ -180,9 +167,7 @@ class App extends Component<{}, StateTypes> {
             <Switch>
               <Route
                 path="/t/:id"
-                render={(props) => (
-                  <TokiInfo setAlertHandler={this.setAlertHandler} {...props} />
-                )}
+                render={(props) => <TokiInfo setAlertHandler={this.setAlertHandler} {...props} />}
               />
               <Route
                 exact

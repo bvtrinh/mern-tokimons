@@ -9,11 +9,7 @@ interface PrivateRouteProps {
 }
 
 // https://github.com/rootsher/react-typescript-starter/blob/master/src/app/core/components/protected-route/protected-route.template.tsx
-const PrivateRoute = ({
-  children,
-  component: Component,
-  ...rest
-}: PrivateRouteProps) => {
+const PrivateRoute = ({ children, component: Component, ...rest }: PrivateRouteProps) => {
   const render = (props: any) =>
     checkAuth() ? (
       Component ? (

@@ -9,26 +9,14 @@ const TokiSchema = yup.object().shape({
     .required("Required")
     .positive("Must be positive")
     .max(100, "Max level is 100"),
-  fly: yup
-    .number()
-    .required("Required")
-    .positive("Must be positive")
-    .max(100, "Max level is 100"),
+  fly: yup.number().required("Required").positive("Must be positive").max(100, "Max level is 100"),
   fight: yup
     .number()
     .required("Required")
     .positive("Must be positive")
     .max(100, "Max level is 100"),
-  fire: yup
-    .number()
-    .required("Required")
-    .positive("Must be positive")
-    .max(100, "Max level is 100"),
-  ice: yup
-    .number()
-    .required("Required")
-    .positive("Must be positive")
-    .max(100, "Max level is 100"),
+  fire: yup.number().required("Required").positive("Must be positive").max(100, "Max level is 100"),
+  ice: yup.number().required("Required").positive("Must be positive").max(100, "Max level is 100"),
   water: yup
     .number()
     .required("Required")

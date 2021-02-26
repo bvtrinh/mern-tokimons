@@ -5,16 +5,13 @@ export const verifyToken = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<Response | undefined> => {
   try {
     const accessToken = req.cookies["ACCESS_TOKEN"];
 
     if (!accessToken) throw new Error("No access token");
 
-    const isVerified = jwt.verify(
-      accessToken,
-      process.env.ACCESS_TOKEN_SECRET as jwt.Secret
-    );
+    const isVerified = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET as jwt.Secret);
     if (!isVerified) throw new Error("Invalid JWT Token");
     next();
   } catch (err) {

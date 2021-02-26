@@ -60,12 +60,7 @@ const Login = (props: LoginProps & RouteComponentProps) => {
               touched={touched.password}
               component={CustomInput}
             ></Field>
-            <Button
-              disabled={!isValid}
-              type="submit"
-              variant="info"
-              style={{ width: "100%" }}
-            >
+            <Button disabled={!isValid} type="submit" variant="info" style={{ width: "100%" }}>
               Login
             </Button>
           </Form>

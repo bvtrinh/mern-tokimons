@@ -28,7 +28,5 @@ Routes(app);
 connect();
 
 app.listen(port, () =>
-  console.log(
-    `Running ${NODE_ENV} environment.\nServer started on port ${port}`
-  )
+  console.log(`Running ${NODE_ENV} environment.\nServer started on port ${port}`)
 );

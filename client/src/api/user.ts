@@ -2,10 +2,7 @@ import axios from "axios";
 import { ResponseFormat } from "../models/response";
 import { setAuth, clearAuth } from "../utils/auth";
 
-export const login = async (
-  email: string,
-  password: string
-): Promise<ResponseFormat> => {
+export const login = async (email: string, password: string): Promise<ResponseFormat> => {
   try {
     const res = await axios.post("/api/u/login", { email, password });
     const { expiryTime, firstName } = res.data;

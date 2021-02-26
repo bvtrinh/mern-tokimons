@@ -1,11 +1,5 @@
 import { Router } from "express";
-import {
-  createToki,
-  getAllToki,
-  getOneToki,
-  updateToki,
-  deleteToki,
-} from "../controllers/Tokimon";
+import { createToki, getAllToki, getOneToki, updateToki, deleteToki } from "../controllers/Tokimon";
 import { tokiValidation } from "../middleware/validation";
 import { verifyToken } from "../middleware/jwt";
 

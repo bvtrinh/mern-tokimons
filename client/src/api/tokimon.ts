@@ -11,9 +11,7 @@ export const getAllTokis = async (): Promise<ResponseFormat> => {
   }
 };
 
-export const createToki = async (
-  toki: FullTokimon
-): Promise<ResponseFormat> => {
+export const createToki = async (toki: FullTokimon): Promise<ResponseFormat> => {
   try {
     const res = await axios.post("/api/t", toki);
     return { ...res.data, statusCode: res.status };
@@ -22,9 +20,7 @@ export const createToki = async (
   }
 };
 
-export const updateToki = async (
-  toki: FullTokimon
-): Promise<ResponseFormat> => {
+export const updateToki = async (toki: FullTokimon): Promise<ResponseFormat> => {
   try {
     const id = toki._id;
     const res = await axios.patch(`/api/t/${id}`, toki);

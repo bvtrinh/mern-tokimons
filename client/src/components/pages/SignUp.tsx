@@ -26,13 +26,7 @@ interface SignupProps extends RouteComponentProps {
 const SignUp = (props: SignupProps) => {
   const signupHandler = async (values: signupForm) => {
     const { firstName, lastName, email, password, confirmPassword } = values;
-    const res = await signup(
-      firstName,
-      lastName,
-      email,
-      password,
-      confirmPassword
-    );
+    const res = await signup(firstName, lastName, email, password, confirmPassword);
     props.setAlertHandler(res);
     if (res.statusCode === 200) {
       props.setStateAuth();
@@ -96,12 +90,7 @@ const SignUp = (props: SignupProps) => {
               touched={touched.confirmPassword}
               component={CustomInput}
             ></Field>
-            <Button
-              disabled={!isValid}
-              type="submit"
-              variant="info"
-              style={{ width: "100%" }}
-            >
+            <Button disabled={!isValid} type="submit" variant="info" style={{ width: "100%" }}>
               Login
             </Button>
           </Form>

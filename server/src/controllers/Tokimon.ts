@@ -26,9 +26,7 @@ export const createToki: RequestHandler = async (req, res) => {
   try {
     await newToki.save();
 
-    return res
-      .status(200)
-      .json({ message: "Created the Tokimon.", error: false });
+    return res.status(200).json({ message: "Created the Tokimon.", error: false });
   } catch (err) {
     // In case of duplicate key errors
     if (err.code === 11000) {
@@ -113,9 +111,7 @@ export const updateToki: RequestHandler = async (req, res) => {
   } catch (err) {
     // If it hits here most likely unable to find Tokimon
     console.log(err);
-    return res
-      .status(500)
-      .json({ payload: err, message: err.message, error: true });
+    return res.status(500).json({ payload: err, message: err.message, error: true });
   }
 };
 
@@ -126,13 +122,9 @@ export const deleteToki: RequestHandler = async (req, res) => {
   // Delete the Tokimon in DB
   try {
     await Tokimon.deleteOne({ _id: id });
-    return res
-      .status(200)
-      .json({ message: "Deleted the Tokimon.", error: false });
+    return res.status(200).json({ message: "Deleted the Tokimon.", error: false });
   } catch (err) {
     console.log(err);
-    return res
-      .status(500)
-      .json({ payload: err, message: err.message, error: true });
+    return res.status(500).json({ payload: err, message: err.message, error: true });
   }
 };
