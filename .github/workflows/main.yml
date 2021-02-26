@@ -31,5 +31,8 @@ jobs:
       - name: Install linting dependencies
         run: npm ci --cache ~/.npm --prefer-offline
 
+      - name: Install client dependencies
+        run: cd client && npm ci --only=prod --cache ~/.npm --prefer-offline
+
       - name: Run linter
         run: npm run lint
