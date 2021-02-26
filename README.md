@@ -1,5 +1,8 @@
 # 🐹 Tokimons with MERN
 
+![pipeline-status](https://github.com/bvtrinh/mern-tokimons/actions/workflows/main.yml/badge.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 An assignment that was given during one of my software engineering courses.
 I thought it was a good practice exercise for a CRUD app and liked the concepts of "Tokimons".
 This was derived from my earlier iteration of it using only
