@@ -9,7 +9,7 @@ on:
 
 jobs:
   setup:
-    name: Run linting, formatter and tests
+    name: setup environment
     runs-on: ubuntu-latest
     steps:
       - name: Check out Git repository
@@ -20,11 +20,6 @@ jobs:
         with:
           node-version: 14
 
-  build:
-    needs: setup
-    name: build npm packages
-    runs-on: ubuntu-latest
-    steps:
       - name: Restore node_modules from cache
         uses: actions/cache@v2
         with:
@@ -33,6 +28,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
+  build:
+    needs: setup
+    name: build npm packages
+    runs-on: ubuntu-latest
+    steps:
       - name: Install linting dependencies
         run: npm ci --cache ~/.npm --prefer-offline
 
@@ -41,7 +41,7 @@ jobs:
 
   linter:
     needs: [setup, build]
-    name: runs linter and formater
+    name: run linter and formater
     runs-on: ubuntu-latest
     steps:
       - name: Run linter
