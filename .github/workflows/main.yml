@@ -8,8 +8,8 @@ on:
     branches: [main]
 
 jobs:
-  build:
-    name: setup and build npm packages
+  linter:
+    name: setup, build npm packages and run linter
     runs-on: ubuntu-latest
     steps:
       - name: Check out Git repository
@@ -34,10 +34,5 @@ jobs:
       - name: Install client dependencies
         run: cd client && npm ci --only=prod --cache ~/.npm --prefer-offline
 
-  linter:
-    needs: build
-    name: run linter and formater
-    runs-on: ubuntu-latest
-    steps:
       - name: Run linter
         run: npm run lint
