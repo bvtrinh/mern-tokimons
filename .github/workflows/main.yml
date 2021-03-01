@@ -8,10 +8,9 @@ on:
     branches: [main]
 
 jobs:
-  testing:
+  setup:
     name: Run linting, formatter and tests
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v2
@@ -21,6 +20,11 @@ jobs:
         with:
           node-version: 14
 
+  build:
+    needs: setup
+    name: build npm packages
+    runs-on: ubuntu-latest
+    steps:
       - name: Restore node_modules from cache
         uses: actions/cache@v2
         with:
@@ -28,11 +32,17 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+
       - name: Install linting dependencies
         run: npm ci --cache ~/.npm --prefer-offline
 
       - name: Install client dependencies
         run: cd client && npm ci --only=prod --cache ~/.npm --prefer-offline
 
+  linter:
+    needs: [setup, build]
+    name: runs linter and formater
+    runs-on: ubuntu-latest
+    steps:
       - name: Run linter
         run: npm run lint
