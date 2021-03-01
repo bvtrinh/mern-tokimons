@@ -8,18 +8,13 @@ on:
     branches: [main]
 
 jobs:
-  setup:
-    name: setup environment
+  build:
+    name: setup and build npm packages
     runs-on: ubuntu-latest
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v2
 
-  build:
-    needs: setup
-    name: build npm packages
-    runs-on: ubuntu-latest
-    steps:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
@@ -40,7 +35,7 @@ jobs:
         run: cd client && npm ci --only=prod --cache ~/.npm --prefer-offline
 
   linter:
-    needs: [setup, build]
+    needs: build
     name: run linter and formater
     runs-on: ubuntu-latest
     steps:
